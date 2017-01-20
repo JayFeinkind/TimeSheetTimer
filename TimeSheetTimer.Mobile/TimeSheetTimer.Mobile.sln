@@ -5,13 +5,13 @@ VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TimeSheetTimer.Mobile.Services", "TimeSheetTimer.Mobile.Services\TimeSheetTimer.Mobile.Services.csproj", "{616D5E89-7621-4CA3-A841-FE1C37003E7A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TimeSheetTimer.Mobile.DataAccess", "TimeSheetTimer.Mobile.DataAccess\TimeSheetTimer.Mobile.DataAccess.csproj", "{01B072D5-6C6E-431B-B080-C9094A8BCC12}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TimeSheetTimer.Mobile.Interfaces", "TimeSheetTimer.Mobile.Interfaces\TimeSheetTimer.Mobile.Interfaces.csproj", "{AE9A429C-43EA-4CC2-A631-CD32EA22B1CC}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TimeSheetTimer.Mobile.ViewModels", "TimeSheetTimer.Mobile.ViewModels\TimeSheetTimer.Mobile.ViewModels.csproj", "{872DE46C-DE17-40A8-8EE1-B964831CB3F1}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TimeSheetTimer.Mobile.ClassLibrary", "TimeSheetTimer.Mobile.ClassLibrary\TimeSheetTimer.Mobile.ClassLibrary.csproj", "{5A50BAA2-7DB3-47D7-9043-93807413FB41}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TimeSheetTimer.Mobile.DataAccess", "TimeSheetTimer.Mobile.DataAccess\TimeSheetTimer.Mobile.DataAccess.csproj", "{157B7749-27FA-4258-8F1E-E2A3AB2EB5E2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,10 +23,6 @@ Global
 		{616D5E89-7621-4CA3-A841-FE1C37003E7A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{616D5E89-7621-4CA3-A841-FE1C37003E7A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{616D5E89-7621-4CA3-A841-FE1C37003E7A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{01B072D5-6C6E-431B-B080-C9094A8BCC12}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{01B072D5-6C6E-431B-B080-C9094A8BCC12}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{01B072D5-6C6E-431B-B080-C9094A8BCC12}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{01B072D5-6C6E-431B-B080-C9094A8BCC12}.Release|Any CPU.Build.0 = Release|Any CPU
 		{AE9A429C-43EA-4CC2-A631-CD32EA22B1CC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{AE9A429C-43EA-4CC2-A631-CD32EA22B1CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AE9A429C-43EA-4CC2-A631-CD32EA22B1CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -39,6 +35,10 @@ Global
 		{5A50BAA2-7DB3-47D7-9043-93807413FB41}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5A50BAA2-7DB3-47D7-9043-93807413FB41}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5A50BAA2-7DB3-47D7-9043-93807413FB41}.Release|Any CPU.Build.0 = Release|Any CPU
+		{157B7749-27FA-4258-8F1E-E2A3AB2EB5E2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{157B7749-27FA-4258-8F1E-E2A3AB2EB5E2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{157B7749-27FA-4258-8F1E-E2A3AB2EB5E2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{157B7749-27FA-4258-8F1E-E2A3AB2EB5E2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

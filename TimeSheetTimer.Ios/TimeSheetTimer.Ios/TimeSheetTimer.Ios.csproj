@@ -116,6 +116,10 @@
     <Compile Include="Main.cs" />
     <Compile Include="AppDelegate.cs" />
     <Compile Include="IosSqliteFileReaderRepository.cs" />
+    <Compile Include="ProjectsListViewController.cs" />
+    <Compile Include="ProjectsListViewController.designer.cs">
+      <DependentUpon>ProjectsListViewController.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\TimeSheetTimer.Mobile\TimeSheetTimer.Mobile.ClassLibrary\TimeSheetTimer.Mobile.ClassLibrary.csproj">

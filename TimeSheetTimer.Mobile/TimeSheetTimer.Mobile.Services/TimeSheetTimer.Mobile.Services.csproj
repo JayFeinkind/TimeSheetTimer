@@ -69,7 +69,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TimeSheetTimer.Mobile.DataAccess\TimeSheetTimer.Mobile.DataAccess.csproj">
-      <Project>{01B072D5-6C6E-431B-B080-C9094A8BCC12}</Project>
+      <Project>{157b7749-27fa-4258-8f1e-e2a3ab2eb5e2}</Project>
       <Name>TimeSheetTimer.Mobile.DataAccess</Name>
     </ProjectReference>
     <ProjectReference Include="..\TimeSheetTimer.Mobile.Interfaces\TimeSheetTimer.Mobile.Interfaces.csproj">
@@ -81,9 +81,7 @@
       <Name>TimeSheetTimer.Mobile.ClassLibrary</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Mappers\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
