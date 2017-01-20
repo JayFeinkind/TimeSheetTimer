@@ -11,8 +11,9 @@ namespace TimeSheetTimer.Mobile.Services
 	{
 		IProjectRepository _projectRepository;
 		IProjectTimeRecordRepository _projectTimeRepository;
-		ProjectMapper _projectMapper = new ProjectMapper ();
-		ProjectTimeRecordMapper _projectTimeMapper = new ProjectTimeRecordMapper();
+
+		readonly ProjectMapper _projectMapper = new ProjectMapper ();
+		readonly ProjectTimeRecordMapper _projectTimeMapper = new ProjectTimeRecordMapper ();
 
 		public ProjectService (IProjectRepository projectRepository, IProjectTimeRecordRepository projectTimeRepository)
 		{
