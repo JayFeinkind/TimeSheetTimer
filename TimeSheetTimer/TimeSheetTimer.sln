@@ -1,0 +1,23 @@
+
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TimeSheetTimer.Ios", "TimeSheetTimer.Ios\TimeSheetTimer.Ios.csproj", "{FACB6D51-9511-4126-A281-678E576B3BF6}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|iPhoneSimulator = Debug|iPhoneSimulator
+		Release|iPhone = Release|iPhone
+		Release|iPhoneSimulator = Release|iPhoneSimulator
+		Debug|iPhone = Debug|iPhone
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FACB6D51-9511-4126-A281-678E576B3BF6}.Debug|iPhoneSimulator.ActiveCfg = Debug|iPhoneSimulator
+		{FACB6D51-9511-4126-A281-678E576B3BF6}.Debug|iPhoneSimulator.Build.0 = Debug|iPhoneSimulator
+		{FACB6D51-9511-4126-A281-678E576B3BF6}.Release|iPhone.ActiveCfg = Release|iPhone
+		{FACB6D51-9511-4126-A281-678E576B3BF6}.Release|iPhone.Build.0 = Release|iPhone
+		{FACB6D51-9511-4126-A281-678E576B3BF6}.Release|iPhoneSimulator.ActiveCfg = Release|iPhoneSimulator
+		{FACB6D51-9511-4126-A281-678E576B3BF6}.Release|iPhoneSimulator.Build.0 = Release|iPhoneSimulator
+		{FACB6D51-9511-4126-A281-678E576B3BF6}.Debug|iPhone.ActiveCfg = Debug|iPhone
+		{FACB6D51-9511-4126-A281-678E576B3BF6}.Debug|iPhone.Build.0 = Debug|iPhone
+	EndGlobalSection
+EndGlobal
