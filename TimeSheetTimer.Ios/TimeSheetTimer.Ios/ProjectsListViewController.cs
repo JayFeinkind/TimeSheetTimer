@@ -168,7 +168,8 @@ namespace TimeSheetTimer.Ios
 
 					if (project.IsRunning ())
 					{
-						cell.BackgroundColor = UIColor.FromRGBA (76, 217, 100, 0.25f);
+						cell.BackgroundColor = UIColor.FromRGBA (0, 50, 0, 0.25f);
+						//cell.BackgroundColor = UIColor.FromRGBA (76, 217, 100, 0.25f);
 					}
 					else
 					{

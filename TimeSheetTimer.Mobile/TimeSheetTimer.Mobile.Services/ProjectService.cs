@@ -57,6 +57,8 @@ namespace TimeSheetTimer.Mobile.Services
 					});
 
 					dto.RecordStack = new Stack<ProjectTimeRecordDto> (projectRecords.OrderByDescending (r => r.StartUTC));
+
+					projects.Add (dto);
 				}
 			}
 			catch (Exception e)

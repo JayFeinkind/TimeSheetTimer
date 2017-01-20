@@ -34,13 +34,13 @@ namespace TimeSheetTimer.Ios
 			_dto = dto;
 			_nameLabel.Text = dto.Name;
 
-			if (dto.IsRunning ())
+			if (dto.RecordStack.Count == 0)
 			{
-				BackgroundColor = UIColor.FromRGBA (76, 217, 100, 0.25f);
+				_timeLabel.Text = string.Empty;
 			}
 			else
 			{
-				BackgroundColor = UIColor.FromRGBA (0, 0, 0, 0);
+				_timeLabel.Text = _dto.RecordStack.Peek ().Seconds.ToString ();
 			}
 		}
     }
