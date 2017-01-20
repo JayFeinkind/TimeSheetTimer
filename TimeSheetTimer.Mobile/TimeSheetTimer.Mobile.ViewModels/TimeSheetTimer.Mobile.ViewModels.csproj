@@ -43,10 +43,6 @@
       <Project>{616d5e89-7621-4ca3-a841-fe1c37003e7a}</Project>
       <Name>TimeSheetTimer.Mobile.Services</Name>
     </ProjectReference>
-    <ProjectReference Include="..\TimeSheetTimer.Mobile\TimeSheetTimer.Mobile.ClassLibrary.csproj">
-      <Project>{5a50baa2-7db3-47d7-9043-93807413fb41}</Project>
-      <Name>TimeSheetTimer.Mobile.ClassLibrary</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
