@@ -102,6 +102,18 @@ namespace TimeSheetTimer.Ios
 						alert.Actions [0].Enabled = true;
 					}
 
+					if (string.IsNullOrWhiteSpace (replacementString) && (range.Length + range.Location > 40))
+						return false;
+
+					if (replacementString == " " && textField.Text.Length == 40)
+						return false;
+
+					if (string.IsNullOrWhiteSpace (replacementString))
+						return true;
+
+					if (textField.Text.Length + replacementString.Length > 40)
+						return false;
+
 					return true;
 				};
 			});
@@ -150,7 +162,21 @@ namespace TimeSheetTimer.Ios
 				}
 				else
 				{
-					return new UITableViewCell ();
+					var cell = tableView.DequeueReusableCell ("ProjectTimeTableViewCell") as ProjectTimeTableViewCell;
+					var project = _viewModel.AllProjects [indexPath.Row - 1];
+					cell.SelectionStyle = UITableViewCellSelectionStyle.None;
+
+					if (project.IsRunning ())
+					{
+						cell.BackgroundColor = UIColor.FromRGBA (76, 217, 100, 0.25f);
+					}
+					else
+					{
+						cell.BackgroundColor = UIColor.FromRGBA (0, 0, 0, 0);
+					}
+
+					cell.UpdateCell (project);
+					return cell;
 				}
 			}
 
@@ -162,6 +188,20 @@ namespace TimeSheetTimer.Ios
 			public override void RowSelected (UITableView tableView, NSIndexPath indexPath)
 			{
 				_lastSelectedRow = indexPath;
+
+				if (indexPath.Row != 0)
+				{
+					var project = _viewModel.AllProjects [indexPath.Row - 1];
+
+					if (project.IsRunning ())
+					{
+						project.Stop ();
+					}
+					else
+					{
+						project.Start ();
+					}
+				}
 
 				tableView.BeginUpdates ();
 				tableView.ReloadRows (new NSIndexPath [] { indexPath }, UITableViewRowAnimation.None);

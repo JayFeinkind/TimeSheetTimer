@@ -127,6 +127,10 @@
     <Compile Include="NewProjectTableViewCell.designer.cs">
       <DependentUpon>NewProjectTableViewCell.cs</DependentUpon>
     </Compile>
+    <Compile Include="ProjectTimeTableViewCell.cs" />
+    <Compile Include="ProjectTimeTableViewCell.designer.cs">
+      <DependentUpon>ProjectTimeTableViewCell.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\TimeSheetTimer.Mobile\TimeSheetTimer.Mobile.ClassLibrary\TimeSheetTimer.Mobile.ClassLibrary.csproj">

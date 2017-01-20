@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Diagnostics;
+
 namespace TimeSheetTimer.Mobile.ClassLibrary
 {
 	public class ProjectTimeRecordDto
@@ -9,16 +11,23 @@ namespace TimeSheetTimer.Mobile.ClassLibrary
 
 		public DateTime? EndUTC { get; set; }
 
-		public long Minutes
+		public long Seconds
 		{
 			get
 			{
-				if (StartUTC == null || EndUTC == null)
+				if (StartUTC == null)
 				{
 					return 0;
 				}
 
-				return EndUTC.Value.Subtract (StartUTC.Value).Ticks;
+				if (EndUTC != null)
+				{
+					return EndUTC.Value.Subtract (StartUTC.Value).Ticks / 10000000;
+				}
+				else
+				{
+					return DateTime.UtcNow.Subtract (StartUTC.Value).Ticks / 10000000;
+				}
 			}
 		}
 	}
