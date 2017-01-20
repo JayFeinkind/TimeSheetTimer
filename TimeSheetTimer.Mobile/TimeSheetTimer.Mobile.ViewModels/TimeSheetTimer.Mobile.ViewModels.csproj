@@ -1,11 +1,11 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <MinimumVisualStudioVersion>10.0</MinimumVisualStudioVersion>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{872de46c-de17-40a8-8ee1-b964831cb3f1}</ProjectGuid>
+    <ProjectGuid>{872DE46C-DE17-40A8-8EE1-B964831CB3F1}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>TimeSheetTimer.Mobile.ViewModels</RootNamespace>
@@ -35,9 +35,20 @@
   </PropertyGroup>
   <ItemGroup>
     <!-- A reference to the entire .NET Framework is automatically included -->
+    <ProjectReference Include="..\TimeSheetTimer.Mobile.Interfaces\TimeSheetTimer.Mobile.Interfaces.csproj">
+      <Project>{ae9a429c-43ea-4cc2-a631-cd32ea22b1cc}</Project>
+      <Name>TimeSheetTimer.Mobile.Interfaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TimeSheetTimer.Mobile.Services\TimeSheetTimer.Mobile.Services.csproj">
+      <Project>{616d5e89-7621-4ca3-a841-fe1c37003e7a}</Project>
+      <Name>TimeSheetTimer.Mobile.Services</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TimeSheetTimer.Mobile\TimeSheetTimer.Mobile.ClassLibrary.csproj">
+      <Project>{5a50baa2-7db3-47d7-9043-93807413fb41}</Project>
+      <Name>TimeSheetTimer.Mobile.ClassLibrary</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
@@ -48,5 +59,4 @@
   <Target Name="AfterBuild">
   </Target>
   -->
-
 </Project>
