@@ -82,6 +82,11 @@ namespace TimeSheetTimer.Mobile.DataAccess
             {
                 result = await _context.Instance.Table<TEntity>().Where(predicate).ToListAsync();
             }
+			catch (SQLite.SQLiteException)
+			{
+				await _context.Instance.CreateTableAsync<TEntity> ();
+				await ReadAllEntitiesWhere (predicate);
+			}
             catch (Exception e)
             {
               
@@ -94,14 +99,19 @@ namespace TimeSheetTimer.Mobile.DataAccess
         {
             var result = new List<TEntity>();
 
-            try
-            {
-                result = await _context.Instance.Table<TEntity>().ToListAsync();
-            }
-            catch (Exception e)
-            {
-               
-            }
+			try
+			{
+				result = await _context.Instance.Table<TEntity> ().ToListAsync ();
+			}
+			catch (SQLite.SQLiteException)
+			{
+				await _context.Instance.CreateTableAsync<TEntity> ();
+				await ReadAllEntities ();
+			}
+			catch (Exception e)
+			{
+
+			}
 
             return result;
         }
@@ -116,6 +126,11 @@ namespace TimeSheetTimer.Mobile.DataAccess
             {
                 result = await _context.Instance.Table<TEntity>().Where(predicate).FirstOrDefaultAsync();
             }
+			catch (SQLite.SQLiteException)
+			{
+				await _context.Instance.CreateTableAsync<TEntity> ();
+				await ReadEntityWhere (predicate);
+			}
             catch (Exception e)
             {
                
@@ -144,12 +159,17 @@ namespace TimeSheetTimer.Mobile.DataAccess
         // create entity or update if it already exists
         public virtual async Task<List<TEntity>> CreateAllEntities(List<TEntity> entities)
         {
-           List<TEntity> createResult = new List<TEntity>();
+           var createResult = new List<TEntity>();
 
             try
             {
                 createResult = await ModifyEntities(entities, _context.Instance.InsertAllAsync).ConfigureAwait(false);               
             }
+			catch (SQLite.SQLiteException)
+			{
+				await _context.Instance.CreateTableAsync<TEntity> ();
+				await CreateAllEntities(entities);
+			}
             catch (Exception e)
             {
                

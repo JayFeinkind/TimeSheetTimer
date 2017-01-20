@@ -12,6 +12,8 @@ namespace TimeSheetTimer.Mobile.ViewModels
 
 		public ViewModelNavigationRequested ViewModelNavigationRequestedHandler;
 
+		public Action<int> NewProjectSaved;
+
 		public ProjectViewModel (IProjectService projectService)
 		{
 			_projectService = projectService;
@@ -22,6 +24,18 @@ namespace TimeSheetTimer.Mobile.ViewModels
 			AllProjects = await _projectService.GetProjects ();
 		}
 
-		public List<ProjectDto> AllProjects { get; set; }
+		public async Task SaveProject (string name)
+		{
+			var project = new ProjectDto ();
+			project.Name = name;
+
+			var newProject = await _projectService.CreateNewProject (project);
+
+			AllProjects.Add (newProject);
+
+			NewProjectSaved?.Invoke (AllProjects.IndexOf (newProject));
+		}
+
+		public List<ProjectDto> AllProjects { get; set; } = new List<ProjectDto> ();
 	}
 }

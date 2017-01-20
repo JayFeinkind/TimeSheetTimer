@@ -9,9 +9,8 @@ namespace TimeSheetTimer.Mobile.Services
 {
 	public class ProjectService : IProjectService
 	{
-		IProjectRepository _projectRepository;
-		IProjectTimeRecordRepository _projectTimeRepository;
-
+		readonly IProjectRepository _projectRepository;
+		readonly IProjectTimeRecordRepository _projectTimeRepository;
 		readonly ProjectMapper _projectMapper = new ProjectMapper ();
 		readonly ProjectTimeRecordMapper _projectTimeMapper = new ProjectTimeRecordMapper ();
 
@@ -19,6 +18,24 @@ namespace TimeSheetTimer.Mobile.Services
 		{
 			_projectTimeRepository = projectTimeRepository;
 			_projectRepository = projectRepository;
+		}
+
+		public async Task<ProjectDto> CreateNewProject (ProjectDto dto)
+		{
+			try
+			{
+				var entity = _projectMapper.MapDtoToNewEntity (dto);
+
+				await _projectRepository.CreateAllEntities (new List<Project> { entity });
+
+				return _projectMapper.MapEntityToNewDto (await _projectRepository.ReadEntityWhere (e => e.Name == dto.Name).ConfigureAwait (false));
+			}
+			catch (Exception e)
+			{
+				
+			}
+
+			return dto;
 		}
 
 		public async Task<List<ProjectDto>> GetProjects ()
@@ -32,14 +49,11 @@ namespace TimeSheetTimer.Mobile.Services
 
 				foreach (var project in allProjects)
 				{
-					var dto = new ProjectDto();
-					_projectMapper.MapEntityToDto (project, dto);
+					var dto = _projectMapper.MapEntityToNewDto (project);
 
 					var projectRecords = allRecords.FindAll (r => r.ProjectId == project.Id).Select (e =>
 					{
-						var record = new ProjectTimeRecordDto ();
-						_projectTimeMapper.MapEntityToDto (e, record);
-						return record;
+						return _projectTimeMapper.MapEntityToNewDto (e);
 					});
 
 					dto.RecordStack = new Stack<ProjectTimeRecordDto> (projectRecords.OrderByDescending (r => r.StartUTC));

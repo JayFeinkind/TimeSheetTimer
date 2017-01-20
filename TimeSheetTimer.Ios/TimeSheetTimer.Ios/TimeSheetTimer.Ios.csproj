@@ -98,10 +98,13 @@
     <ImageAsset Include="Assets.xcassets\Contents.json" />
     <ImageAsset Include="Assets.xcassets\BlueGradient.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\BlueGradient.imageset\okmhpvuq.png" />
+    <ImageAsset Include="Assets.xcassets\GreenPlus.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\GreenPlus.imageset\PlusImage.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
     <Folder Include="Assets.xcassets\BlueGradient.imageset\" />
+    <Folder Include="Assets.xcassets\GreenPlus.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
@@ -119,6 +122,10 @@
     <Compile Include="ProjectsListViewController.cs" />
     <Compile Include="ProjectsListViewController.designer.cs">
       <DependentUpon>ProjectsListViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="NewProjectTableViewCell.cs" />
+    <Compile Include="NewProjectTableViewCell.designer.cs">
+      <DependentUpon>NewProjectTableViewCell.cs</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>

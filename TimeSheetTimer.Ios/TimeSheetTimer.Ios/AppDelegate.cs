@@ -33,6 +33,7 @@ namespace TimeSheetTimer.Ios
 			// If not required for your application you can safely delete this method
 
 			_dependencyService = new DependencyService ();
+			_dependencyService.RegisterInstance (_dependencyService);
 			_dependencyService.RegisterInstance<ISqliteFileReaderRepository> (new IosSqliteFileReaderRepository ());
 
 			return true;
@@ -62,8 +63,6 @@ namespace TimeSheetTimer.Ios
 		{
 			// Restart any tasks that were paused (or not yet started) while the application was inactive. 
 			// If the application was previously in the background, optionally refresh the user interface.
-
-			await _dependencyService.Resolve<ISqliteFileReaderRepository> ().CreateDB ();
 		}
 
 		public override void WillTerminate(UIApplication application)
