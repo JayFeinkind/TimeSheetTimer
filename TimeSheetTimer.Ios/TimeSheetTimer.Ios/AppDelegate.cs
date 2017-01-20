@@ -1,4 +1,6 @@
 ﻿using Foundation;
+using TimeSheetTimer.Mobile.Interfaces;
+using TimeSheetTimer.Mobile.Services;
 using UIKit;
 
 namespace TimeSheetTimer.Ios
@@ -9,6 +11,15 @@ namespace TimeSheetTimer.Ios
 	public class AppDelegate : UIApplicationDelegate
 	{
 		// class-level declarations
+		private static IDependencyService _dependencyService;
+
+		public static IDependencyService DependencyService
+		{
+			get
+			{
+				return _dependencyService;
+			}
+		}
 
 		public override UIWindow Window
 		{
@@ -20,6 +31,9 @@ namespace TimeSheetTimer.Ios
 		{
 			// Override point for customization after application launch.
 			// If not required for your application you can safely delete this method
+
+			_dependencyService = new DependencyService ();
+			_dependencyService.RegisterInstance<ISqliteFileReaderRepository> (new IosSqliteFileReaderRepository ());
 
 			return true;
 		}
@@ -44,10 +58,12 @@ namespace TimeSheetTimer.Ios
 			// Here you can undo many of the changes made on entering the background.
 		}
 
-		public override void OnActivated(UIApplication application)
+		public override async void OnActivated(UIApplication application)
 		{
 			// Restart any tasks that were paused (or not yet started) while the application was inactive. 
 			// If the application was previously in the background, optionally refresh the user interface.
+
+			await _dependencyService.Resolve<ISqliteFileReaderRepository> ().CreateDB ();
 		}
 
 		public override void WillTerminate(UIApplication application)

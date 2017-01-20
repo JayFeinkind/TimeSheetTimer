@@ -27,6 +27,10 @@ namespace TimeSheetTimer.Mobile.Services
         public void RegisterDependencies()
         {
             _dependencyContainer.RegisterType<ICreateSqliteService, CreateSqliteService>();
+			_dependencyContainer.RegisterType<ISqliteConnectionService, SqliteConnectionService> ();
+			_dependencyContainer.RegisterType<IProjectRepository, ProjectRepository> ();
+			_dependencyContainer.RegisterType<IProjectTimeRecordRepository, ProjectTimeRecordRepository> ();
+			_dependencyContainer.RegisterType<IProjectService, ProjectService> ();
         }
 
         public void RegisterInstance<T>(T implementation)

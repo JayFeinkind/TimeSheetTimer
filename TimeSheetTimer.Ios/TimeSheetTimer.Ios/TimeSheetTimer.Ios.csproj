@@ -96,9 +96,12 @@
   <ItemGroup>
     <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\BlueGradient.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\BlueGradient.imageset\okmhpvuq.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
+    <Folder Include="Assets.xcassets\BlueGradient.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
@@ -116,6 +119,25 @@
     <Compile Include="ViewController.designer.cs">
       <DependentUpon>ViewController.cs</DependentUpon>
     </Compile>
+    <Compile Include="IosSqliteFileReaderRepository.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\TimeSheetTimer.Mobile\TimeSheetTimer.Mobile.ClassLibrary\TimeSheetTimer.Mobile.ClassLibrary.csproj">
+      <Project>{5A50BAA2-7DB3-47D7-9043-93807413FB41}</Project>
+      <Name>TimeSheetTimer.Mobile.ClassLibrary</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\TimeSheetTimer.Mobile\TimeSheetTimer.Mobile.Interfaces\TimeSheetTimer.Mobile.Interfaces.csproj">
+      <Project>{AE9A429C-43EA-4CC2-A631-CD32EA22B1CC}</Project>
+      <Name>TimeSheetTimer.Mobile.Interfaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\TimeSheetTimer.Mobile\TimeSheetTimer.Mobile.ViewModels\TimeSheetTimer.Mobile.ViewModels.csproj">
+      <Project>{872DE46C-DE17-40A8-8EE1-B964831CB3F1}</Project>
+      <Name>TimeSheetTimer.Mobile.ViewModels</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\TimeSheetTimer.Mobile\TimeSheetTimer.Mobile.Services\TimeSheetTimer.Mobile.Services.csproj">
+      <Project>{616D5E89-7621-4CA3-A841-FE1C37003E7A}</Project>
+      <Name>TimeSheetTimer.Mobile.Services</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
   <Import Project="..\packages\SQLitePCL.raw.0.8.6\build\Xamarin.iOS10\SQLitePCL.raw.targets" Condition="Exists('..\packages\SQLitePCL.raw.0.8.6\build\Xamarin.iOS10\SQLitePCL.raw.targets')" />

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TimeSheetTimer.Mobile.Interfaces;
+using TimeSheetTimer.Mobile.ClassLibrary;
 
 namespace TimeSheetTimer.Mobile.Services
 {
@@ -38,7 +39,8 @@ namespace TimeSheetTimer.Mobile.Services
         {
             await ClearDB();
 
-
+			await _context.CreateTableAsync<Project> ();
+			await _context.CreateTableAsync<ProjectTimeRecord> ();
         }
     }
 

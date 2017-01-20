@@ -4,11 +4,12 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
+using TimeSheetTimer.Mobile.ClassLibrary;
 using TimeSheetTimer.Mobile.Interfaces;
 
 namespace TimeSheetTimer.Mobile.DataAccess
 {
-    public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : new()
+    public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : Entity, new()
     {
         private delegate Task<int> ActOnEntities(List<TEntity> entities);
         private delegate Task<int> ActOnEntity(object entity);
@@ -123,7 +124,6 @@ namespace TimeSheetTimer.Mobile.DataAccess
             return result;
         }
 
-
         #region Create/Update/Delete
         // Update, Delete, and Create methods do not set CurrentState for entity.
 
@@ -159,7 +159,5 @@ namespace TimeSheetTimer.Mobile.DataAccess
         }
 
         #endregion
-
-      
     }
 }

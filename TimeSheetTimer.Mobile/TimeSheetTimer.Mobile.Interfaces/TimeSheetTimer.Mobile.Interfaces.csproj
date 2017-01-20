@@ -39,6 +39,10 @@
     <Compile Include="ISqliteConnectionService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ICreateSqliteService.cs" />
+    <Compile Include="ISqliteFileReaderRepository.cs" />
+    <Compile Include="IProjectRepository.cs" />
+    <Compile Include="IProjectTimeRecordRepository.cs" />
+    <Compile Include="IProjectService.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="SQLite-net, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -54,6 +58,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\TimeSheetTimer.Mobile.ClassLibrary\TimeSheetTimer.Mobile.ClassLibrary.csproj">
+      <Project>{5A50BAA2-7DB3-47D7-9043-93807413FB41}</Project>
+      <Name>TimeSheetTimer.Mobile.ClassLibrary</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
