@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 
 namespace TimeSheetTimer.Mobile.ClassLibrary
 {
@@ -20,6 +22,7 @@ namespace TimeSheetTimer.Mobile.ClassLibrary
 		public void Start ()
 		{
 			var currentRecord = new ProjectTimeRecordDto ();
+			currentRecord.ProjectId = this.Id;
 			currentRecord.StartUTC = DateTime.UtcNow;
 
 			RecordStack.Push (currentRecord);
@@ -27,7 +30,8 @@ namespace TimeSheetTimer.Mobile.ClassLibrary
 
 		public void Stop ()
 		{
-			// if no records exist or the top of the stack has its end time set return and do nothing
+			// if no records exist or the top of the stack has its end time set return and do nothing.
+			//   these indicate Start() was not called first.
 			if (RecordStack.Count == 0 || RecordStack.Peek().EndUTC != null)
 				return;
 

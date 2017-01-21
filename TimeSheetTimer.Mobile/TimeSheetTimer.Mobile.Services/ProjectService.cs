@@ -20,13 +20,34 @@ namespace TimeSheetTimer.Mobile.Services
 			_projectRepository = projectRepository;
 		}
 
+		public async Task<ProjectTimeRecordDto> CreateNewRecord(ProjectTimeRecordDto dto)
+		{
+			try
+			{
+				var entity = _projectTimeMapper.MapDtoToNewEntity(dto);
+
+				await _projectTimeRepository.CreateAllEntities(new List<ProjectTimeRecord> { entity }).ConfigureAwait(false);
+
+				return _projectTimeMapper.MapEntityToNewDto(
+					await _projectTimeRepository.ReadEntityWhere(e =>
+																 e.ProjectId == dto.ProjectId &&
+																 e.StartUTC == dto.StartUTC && 
+					                                             e.EndUTC == dto.EndUTC).ConfigureAwait(false));
+			}
+			catch (Exception e)
+			{
+			}
+
+			return dto;
+		}
+
 		public async Task<ProjectDto> CreateNewProject (ProjectDto dto)
 		{
 			try
 			{
 				var entity = _projectMapper.MapDtoToNewEntity (dto);
 
-				await _projectRepository.CreateAllEntities (new List<Project> { entity });
+				await _projectRepository.CreateAllEntities (new List<Project> { entity }).ConfigureAwait(false);
 
 				return _projectMapper.MapEntityToNewDto (await _projectRepository.ReadEntityWhere (e => e.Name == dto.Name).ConfigureAwait (false));
 			}
@@ -56,7 +77,7 @@ namespace TimeSheetTimer.Mobile.Services
 						return _projectTimeMapper.MapEntityToNewDto (e);
 					});
 
-					dto.RecordStack = new Stack<ProjectTimeRecordDto> (projectRecords.OrderByDescending (r => r.StartUTC));
+					dto.RecordStack = new Stack<ProjectTimeRecordDto> (projectRecords.OrderBy (r => r.StartUTC));
 
 					projects.Add (dto);
 				}

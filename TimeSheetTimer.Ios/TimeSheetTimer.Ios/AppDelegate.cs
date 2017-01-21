@@ -1,4 +1,5 @@
-﻿using Foundation;
+﻿using System.Threading.Tasks;
+using Foundation;
 using TimeSheetTimer.Mobile.Interfaces;
 using TimeSheetTimer.Mobile.Services;
 using UIKit;
@@ -39,12 +40,14 @@ namespace TimeSheetTimer.Ios
 			return true;
 		}
 
-		public override void OnResignActivation(UIApplication application)
+		public async override void OnResignActivation(UIApplication application)
 		{
 			// Invoked when the application is about to move from active to inactive state.
 			// This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) 
 			// or when the user quits the application and it begins the transition to the background state.
 			// Games should use this method to pause the game.
+
+			await SaveCurrentRecords();
 		}
 
 		public override void DidEnterBackground(UIApplication application)
@@ -59,15 +62,27 @@ namespace TimeSheetTimer.Ios
 			// Here you can undo many of the changes made on entering the background.
 		}
 
-		public override async void OnActivated(UIApplication application)
+		public override void OnActivated(UIApplication application)
 		{
 			// Restart any tasks that were paused (or not yet started) while the application was inactive. 
 			// If the application was previously in the background, optionally refresh the user interface.
 		}
 
-		public override void WillTerminate(UIApplication application)
+		public async override void WillTerminate(UIApplication application)
 		{
 			// Called when the application is about to terminate. Save data, if needed. See also DidEnterBackground.
+
+			await SaveCurrentRecords();
+		}
+
+		private async Task SaveCurrentRecords()
+		{
+			var viewController = UIApplication.SharedApplication.KeyWindow.RootViewController;
+
+			if (viewController is ProjectsListViewController)
+			{
+				await ((ProjectsListViewController)viewController).OnTransitionToBackground();
+			}
 		}
 	}
 }

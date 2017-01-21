@@ -9,5 +9,6 @@ namespace TimeSheetTimer.Mobile.Interfaces
 	{
 		Task<List<ProjectDto>> GetProjects ();
 		Task<ProjectDto> CreateNewProject (ProjectDto dto);
+		Task<ProjectTimeRecordDto> CreateNewRecord(ProjectTimeRecordDto dto);
 	}
 }

@@ -24,6 +24,11 @@ namespace TimeSheetTimer.Mobile.ViewModels
 			AllProjects = await _projectService.GetProjects ();
 		}
 
+		public async Task SaveTimeRecord(ProjectTimeRecordDto record)
+		{
+			await _projectService.CreateNewRecord(record);
+		}
+
 		public async Task SaveProject (string name)
 		{
 			var project = new ProjectDto ();

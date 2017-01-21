@@ -4,25 +4,70 @@ using UIKit;
 using TimeSheetTimer.Mobile.ViewModels;
 using System.Linq;
 using System.Threading.Tasks;
-using TimeSheetTimer.Mobile.Interfaces;
 
 namespace TimeSheetTimer.Ios
 {
     public partial class ProjectsListViewController : UIViewController
     {
 		ProjectViewModel _viewModel;
+		UIBarButtonItem _clearAllButton;
 
         public ProjectsListViewController (IntPtr handle) : base (handle)
         {
         }
 
+		private async void ClearAllClicked(object sender, EventArgs args)
+		{
+			foreach (var project in _viewModel.AllProjects)
+			{
+				//TODO delete records from db
+
+				if (project.IsRunning())
+				{
+					project.Stop();
+					await _viewModel.SaveTimeRecord(project.RecordStack.Peek());
+				}
+
+				project.RecordStack.Clear();
+			}
+
+			_projectsTableView?.ReloadData();
+		}
+
+		public async Task OnTransitionToBackground()
+		{
+			foreach (var project in _viewModel.AllProjects)
+			{
+				if (project.IsRunning())
+				{
+					project.Stop();
+					await _viewModel.SaveTimeRecord(project.RecordStack.Peek());
+				}
+			}
+		}
+
 		public override void LoadView ()
 		{
 			base.LoadView ();
 
+			_clearAllButton = new UIBarButtonItem();
+
+			_clearAllButton.SetTitleTextAttributes(new UITextAttributes { 
+				TextColor = UIColor.Red,
+				Font = UIFont.BoldSystemFontOfSize(18)
+			}, UIControlState.Normal);
+
+			_clearAllButton.Title = "Clear All";
+			_clearAllButton.Clicked += ClearAllClicked;
+
 			if (NavigationController?.NavigationBar != null)
 			{
 				NavigationController.NavigationBar.Translucent = true;
+			}
+
+			if (NavigationItem != null)
+			{
+				NavigationItem.RightBarButtonItem = _clearAllButton;
 			}
 
 			_viewModel = AppDelegate.DependencyService.Resolve<ProjectViewModel> ();
@@ -33,6 +78,7 @@ namespace TimeSheetTimer.Ios
 			_projectsTableView.BackgroundColor = UIColor.FromRGBA (0, 0, 0, 0);
 			_projectsTableView.EstimatedRowHeight = 60;
 			_projectsTableView.RowHeight = UITableView.AutomaticDimension;
+			_projectsTableView.SeparatorInset = new UIEdgeInsets(0, -10, 0, 0);
 		}
 
 		public async override void ViewDidLoad ()
@@ -157,6 +203,8 @@ namespace TimeSheetTimer.Ios
 						cell.BackgroundColor = UIColor.FromRGBA (0, 0, 0, 0);
 					}
 
+					cell.Label.TextColor = UIColor.FromRGB(101, 46, 0);
+
 					cell.SelectionStyle = UITableViewCellSelectionStyle.None;
 					return cell;
 				}
@@ -168,8 +216,7 @@ namespace TimeSheetTimer.Ios
 
 					if (project.IsRunning ())
 					{
-						cell.BackgroundColor = UIColor.FromRGBA (0, 50, 0, 0.25f);
-						//cell.BackgroundColor = UIColor.FromRGBA (76, 217, 100, 0.25f);
+						cell.BackgroundColor = UIColor.FromRGBA (0, 50, 0, 0.2f);
 					}
 					else
 					{
@@ -186,7 +233,7 @@ namespace TimeSheetTimer.Ios
 				return 1 + _viewModel.AllProjects.Count;
 			}
 
-			public override void RowSelected (UITableView tableView, NSIndexPath indexPath)
+			public async override void RowSelected (UITableView tableView, NSIndexPath indexPath)
 			{
 				_lastSelectedRow = indexPath;
 
@@ -197,6 +244,7 @@ namespace TimeSheetTimer.Ios
 					if (project.IsRunning ())
 					{
 						project.Stop ();
+						await _viewModel.SaveTimeRecord(project.RecordStack.Peek());
 					}
 					else
 					{

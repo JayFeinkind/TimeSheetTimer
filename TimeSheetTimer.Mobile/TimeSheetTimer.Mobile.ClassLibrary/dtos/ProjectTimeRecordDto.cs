@@ -7,6 +7,8 @@ namespace TimeSheetTimer.Mobile.ClassLibrary
 	{
 		public int Id { get; set; }
 
+		public int ProjectId { get; set; }
+
 		public DateTime? StartUTC { get; set; }
 
 		public DateTime? EndUTC { get; set; }
@@ -30,5 +32,7 @@ namespace TimeSheetTimer.Mobile.ClassLibrary
 				}
 			}
 		}
+
+
 	}
 }

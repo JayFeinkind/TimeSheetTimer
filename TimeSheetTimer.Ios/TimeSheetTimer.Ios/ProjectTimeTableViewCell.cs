@@ -3,6 +3,8 @@ using System;
 using UIKit;
 using TimeSheetTimer.Mobile.ClassLibrary;
 using System.Timers;
+using System.Linq;
+using TimeSheetTimer.Mobile.Services;
 
 namespace TimeSheetTimer.Ios
 {
@@ -20,28 +22,30 @@ namespace TimeSheetTimer.Ios
 
 		private void TimerElapsed (object sender, ElapsedEventArgs e)
 		{
-			if (_dto.IsRunning () == false)
+			if (_dto?.IsRunning() != true)
+			{
 				return;
+			}
 
-			InvokeOnMainThread (() =>
-			 {
-				 _timeLabel.Text = _dto.RecordStack.Peek ().Seconds.ToString ();
+			// Timer is invoked on background thread, only UI thread can update UI.
+			InvokeOnMainThread(() =>
+			{
+				_timeLabel.Text = AppUtilityService.FormatedTotal(_dto.RecordStack.Peek().Seconds);
 			});
 		}
 
 		public void UpdateCell (ProjectDto dto)
 		{
 			_dto = dto;
+
+			_nameLabel.TextColor = UIColor.FromRGB(101, 46, 0);
+
 			_nameLabel.Text = dto.Name;
 
-			if (dto.RecordStack.Count == 0)
-			{
-				_timeLabel.Text = string.Empty;
-			}
-			else
-			{
-				_timeLabel.Text = _dto.RecordStack.Peek ().Seconds.ToString ();
-			}
+			_timeLabel.Text = "Total: " + AppUtilityService.FormatedTotal(
+				_dto.RecordStack.Count > 0 ? 
+				_dto.RecordStack.Sum(r => r.Seconds) : 
+				0);
 		}
     }
 }
