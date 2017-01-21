@@ -20,6 +20,30 @@ namespace TimeSheetTimer.Mobile.Services
 			_projectRepository = projectRepository;
 		}
 
+		public async Task DeleteProject(ProjectDto dto)
+		{
+			var entity = _projectMapper.MapDtoToNewEntity(dto);
+			var records = await _projectTimeRepository.ReadAllEntitiesWhere(r => r.ProjectId == entity.Id).ConfigureAwait(false);
+
+			await _projectTimeRepository.DeleteAllEntities(records).ConfigureAwait(false);
+			await _projectRepository.DeleteAllEntities(new List<Project> { entity }).ConfigureAwait(false);
+		}
+
+		public async Task DeleteRecords(List<ProjectTimeRecordDto> records)
+		{
+			var entities = new List<ProjectTimeRecord>();
+
+			foreach (var record in records)
+			{
+				entities.Add(_projectTimeMapper.MapDtoToNewEntity(record));
+			}
+
+			if (entities.Count > 0)
+			{
+				await _projectTimeRepository.DeleteAllEntities(entities);
+			}
+		}
+
 		public async Task<ProjectTimeRecordDto> CreateNewRecord(ProjectTimeRecordDto dto)
 		{
 			try

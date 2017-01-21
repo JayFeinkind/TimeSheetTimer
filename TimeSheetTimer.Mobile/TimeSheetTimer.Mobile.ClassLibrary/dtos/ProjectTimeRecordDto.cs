@@ -24,11 +24,11 @@ namespace TimeSheetTimer.Mobile.ClassLibrary
 
 				if (EndUTC != null)
 				{
-					return EndUTC.Value.Subtract (StartUTC.Value).Ticks / 10000000;
+					return (long)(new TimeSpan( EndUTC.Value.Subtract (StartUTC.Value).Ticks)).TotalSeconds;
 				}
 				else
 				{
-					return DateTime.UtcNow.Subtract (StartUTC.Value).Ticks / 10000000;
+					return (long)(new TimeSpan(DateTime.UtcNow.Subtract(StartUTC.Value).Ticks)).TotalSeconds;
 				}
 			}
 		}

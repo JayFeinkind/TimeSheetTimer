@@ -10,7 +10,7 @@ namespace TimeSheetTimer.Ios
 {
     public partial class ProjectTimeTableViewCell : UITableViewCell
     {
-		Timer timer = new Timer(1000);
+		Timer timer = new Timer(250);
 		ProjectDto _dto;
 
         public ProjectTimeTableViewCell (IntPtr handle) : base (handle)
@@ -22,30 +22,63 @@ namespace TimeSheetTimer.Ios
 
 		private void TimerElapsed (object sender, ElapsedEventArgs e)
 		{
-			if (_dto?.IsRunning() != true)
+			try
 			{
-				return;
+				if (_dto?.IsRunning() == true)
+				{
+					// Timer is invoked on background thread, only UI thread can update UI.
+					InvokeOnMainThread(() =>
+					{
+						_timeLabel.Text = AppUtilityService.FormatedTotal(_dto.RecordStack.Peek().Seconds);
+					});
+				}
 			}
-
-			// Timer is invoked on background thread, only UI thread can update UI.
-			InvokeOnMainThread(() =>
+			catch (Exception exc)
 			{
-				_timeLabel.Text = AppUtilityService.FormatedTotal(_dto.RecordStack.Peek().Seconds);
-			});
+				
+			}
 		}
 
 		public void UpdateCell (ProjectDto dto)
 		{
-			_dto = dto;
+			try
+			{
+				_timeLabel.TextColor = UIColor.White;
 
-			_nameLabel.TextColor = UIColor.FromRGB(101, 46, 0);
+				_dto = dto;
 
-			_nameLabel.Text = dto.Name;
+				if (dto.IsRunning())
+				{
+					BackgroundColor = UIColor.FromRGBA(0, 30, 0, 0.2f);
+				}
+				else
+				{
+					BackgroundColor = UIColor.FromRGBA(0, 0, 0, 0);
+				}
 
-			_timeLabel.Text = "Total: " + AppUtilityService.FormatedTotal(
-				_dto.RecordStack.Count > 0 ? 
-				_dto.RecordStack.Sum(r => r.Seconds) : 
-				0);
+				if (dto?.IsRunning() == false)
+				{
+					_nameLabel.TextColor = ProjectsListViewController.DefaultTextColor;
+					_timeLabel.TextColor = UIColor.White;
+					_timeLabel.Text = "Total: " + AppUtilityService.FormatedTotal(_dto.RecordStack.Sum(r => r.Seconds));
+				}
+				else if (dto != null)
+				{
+					_nameLabel.TextColor = UIColor.Black;
+					_timeLabel.TextColor = UIColor.Black;
+					_timeLabel.Text = AppUtilityService.FormatedTotal(_dto.RecordStack.Peek().Seconds);
+				}
+				else
+				{
+					_timeLabel.Text = string.Empty;
+				}
+
+				_nameLabel.Text = dto.Name;
+			}
+			catch (Exception e)
+			{
+			}
 		}
+
     }
 }

@@ -4,29 +4,98 @@ using UIKit;
 using TimeSheetTimer.Mobile.ViewModels;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Collections.Generic;
 
 namespace TimeSheetTimer.Ios
 {
     public partial class ProjectsListViewController : UIViewController
     {
-		ProjectViewModel _viewModel;
-		UIBarButtonItem _clearAllButton;
+		ProjectViewModel _viewModel = AppDelegate.DependencyService.Resolve<ProjectViewModel>();
+
+		public static UIColor DefaultTextColor = UIColor.FromRGB(11, 211, 0);
 
         public ProjectsListViewController (IntPtr handle) : base (handle)
         {
         }
 
+		public override void LoadView ()
+		{
+			base.LoadView ();
+
+			if (NavigationController?.NavigationBar != null)
+			{
+				NavigationController.NavigationBar.Translucent = true;
+			}
+
+			if (NavigationItem != null)
+			{
+				var clearAllButton = new UIBarButtonItem();
+				var stopAll = new UIBarButtonItem();
+
+				clearAllButton.SetTitleTextAttributes(new UITextAttributes
+				{
+					TextColor = UIColor.Red,
+					Font = UIFont.BoldSystemFontOfSize(18)
+				}, UIControlState.Normal);
+
+				stopAll.SetTitleTextAttributes(new UITextAttributes
+				{
+					TextColor = UIColor.Orange,
+					Font = UIFont.BoldSystemFontOfSize(18)
+				}, UIControlState.Normal);
+
+				stopAll.Title = "Stop All";
+				stopAll.Clicked += StopAllClicked;
+
+				clearAllButton.Title = "Clear All";
+				clearAllButton.Clicked += ClearAllClicked;
+
+				NavigationItem.RightBarButtonItem = clearAllButton;
+				NavigationItem.LeftBarButtonItem = stopAll;
+			}
+
+			_viewModel.NewProjectSaved += NewProjectSaved;
+
+			_projectsTableView.TableFooterView = new UIView ();
+			_projectsTableView.BackgroundColor = UIColor.FromRGBA (0, 0, 0, 0);
+			_projectsTableView.EstimatedRowHeight = 60;
+			_projectsTableView.RowHeight = UITableView.AutomaticDimension;
+			_projectsTableView.SeparatorInset = new UIEdgeInsets(0, -10, 0, 0);
+		}
+
+		public async override void ViewDidLoad ()
+		{
+			base.ViewDidLoad ();
+
+			try
+			{
+				await _viewModel?.Start ();
+
+				_projectsTableView.Source = new ProjectListTableViewSource (_viewModel, ShowNewProjectDialog);
+				_projectsTableView.ReloadData ();
+			}
+			catch (Exception e)
+			{
+			}
+		}
+
+		private void StopAllClicked(object sender, EventArgs args)
+		{
+			foreach (var project in _viewModel.AllProjects)
+			{
+				project.Stop();
+
+				project.RecordStack.Clear();
+			}
+
+			_projectsTableView?.ReloadData();
+		}
+
 		private async void ClearAllClicked(object sender, EventArgs args)
 		{
 			foreach (var project in _viewModel.AllProjects)
 			{
-				//TODO delete records from db
-
-				if (project.IsRunning())
-				{
-					project.Stop();
-					await _viewModel.SaveTimeRecord(project.RecordStack.Peek());
-				}
+				await _viewModel.DeleteRecords(project.RecordStack.Where(r => r.Id != 0).ToList());
 
 				project.RecordStack.Clear();
 			}
@@ -42,60 +111,6 @@ namespace TimeSheetTimer.Ios
 				{
 					project.Stop();
 					await _viewModel.SaveTimeRecord(project.RecordStack.Peek());
-				}
-			}
-		}
-
-		public override void LoadView ()
-		{
-			base.LoadView ();
-
-			_clearAllButton = new UIBarButtonItem();
-
-			_clearAllButton.SetTitleTextAttributes(new UITextAttributes { 
-				TextColor = UIColor.Red,
-				Font = UIFont.BoldSystemFontOfSize(18)
-			}, UIControlState.Normal);
-
-			_clearAllButton.Title = "Clear All";
-			_clearAllButton.Clicked += ClearAllClicked;
-
-			if (NavigationController?.NavigationBar != null)
-			{
-				NavigationController.NavigationBar.Translucent = true;
-			}
-
-			if (NavigationItem != null)
-			{
-				NavigationItem.RightBarButtonItem = _clearAllButton;
-			}
-
-			_viewModel = AppDelegate.DependencyService.Resolve<ProjectViewModel> ();
-
-			_viewModel.NewProjectSaved += NewProjectSaved;
-
-			_projectsTableView.TableFooterView = new UIView ();
-			_projectsTableView.BackgroundColor = UIColor.FromRGBA (0, 0, 0, 0);
-			_projectsTableView.EstimatedRowHeight = 60;
-			_projectsTableView.RowHeight = UITableView.AutomaticDimension;
-			_projectsTableView.SeparatorInset = new UIEdgeInsets(0, -10, 0, 0);
-		}
-
-		public async override void ViewDidLoad ()
-		{
-			base.ViewDidLoad ();
-
-			if (_viewModel != null)
-			{
-				try
-				{
-					await _viewModel.Start ();
-
-					_projectsTableView.Source = new ProjectListTableViewSource (_viewModel, ShowNewProjectDialog);
-					_projectsTableView.ReloadData ();
-				}
-				catch (Exception e)
-				{
 				}
 			}
 		}
@@ -203,7 +218,7 @@ namespace TimeSheetTimer.Ios
 						cell.BackgroundColor = UIColor.FromRGBA (0, 0, 0, 0);
 					}
 
-					cell.Label.TextColor = UIColor.FromRGB(101, 46, 0);
+					cell.Label.TextColor = DefaultTextColor;
 
 					cell.SelectionStyle = UITableViewCellSelectionStyle.None;
 					return cell;
@@ -211,21 +226,55 @@ namespace TimeSheetTimer.Ios
 				else
 				{
 					var cell = tableView.DequeueReusableCell ("ProjectTimeTableViewCell") as ProjectTimeTableViewCell;
-					var project = _viewModel.AllProjects [indexPath.Row - 1];
+					var project = _viewModel?.AllProjects [indexPath.Row - 1];
 					cell.SelectionStyle = UITableViewCellSelectionStyle.None;
-
-					if (project.IsRunning ())
-					{
-						cell.BackgroundColor = UIColor.FromRGBA (0, 50, 0, 0.2f);
-					}
-					else
-					{
-						cell.BackgroundColor = UIColor.FromRGBA (0, 0, 0, 0);
-					}
 
 					cell.UpdateCell (project);
 					return cell;
 				}
+			}
+
+			public override bool CanEditRow(UITableView tableView, NSIndexPath indexPath)
+			{
+				return indexPath.Row != 0;
+			}
+
+			public override UITableViewRowAction[] EditActionsForRow(UITableView tableView, NSIndexPath indexPath)
+			{
+				var project = _viewModel.AllProjects[indexPath.Row - 1];
+
+				UITableViewRowAction editAction = UITableViewRowAction.Create(
+					UITableViewRowActionStyle.Default,
+					"Clear",
+					async (action, path) => 
+					{ 
+						await _viewModel.DeleteRecords(project.RecordStack.ToList());
+						project.RecordStack.Clear();
+
+						tableView.BeginUpdates();
+						tableView.ReloadRows(new NSIndexPath[] { indexPath }, UITableViewRowAnimation.Automatic);
+						tableView.EndUpdates();
+					}
+				);
+
+				editAction.BackgroundColor = UIColor.Orange;
+
+				UITableViewRowAction deleteAction = UITableViewRowAction.Create(
+					UITableViewRowActionStyle.Default,
+					"Delete",
+					async (action, path) =>
+					{
+						await _viewModel.DeleteProject(project);
+
+						tableView.BeginUpdates();
+						tableView.DeleteRows(new NSIndexPath[] { indexPath }, UITableViewRowAnimation.Automatic);
+						tableView.EndUpdates();
+					}
+				);
+
+				deleteAction.BackgroundColor = UIColor.Red;
+
+				return new UITableViewRowAction[] { deleteAction, editAction };
 			}
 
 			public override nint RowsInSection (UITableView tableview, nint section)
@@ -235,8 +284,6 @@ namespace TimeSheetTimer.Ios
 
 			public async override void RowSelected (UITableView tableView, NSIndexPath indexPath)
 			{
-				_lastSelectedRow = indexPath;
-
 				if (indexPath.Row != 0)
 				{
 					var project = _viewModel.AllProjects [indexPath.Row - 1];
@@ -252,14 +299,24 @@ namespace TimeSheetTimer.Ios
 					}
 				}
 
+				var paths = new List<NSIndexPath>() { indexPath };
+
+				if (_lastSelectedRow != null && _lastSelectedRow.Row == 0)
+				{
+					paths.Add(_lastSelectedRow);
+				}
+
+				_lastSelectedRow = indexPath;
+
 				tableView.BeginUpdates ();
-				tableView.ReloadRows (new NSIndexPath [] { indexPath }, UITableViewRowAnimation.None);
+				tableView.ReloadRows (paths.ToArray(), UITableViewRowAnimation.None);
 				tableView.EndUpdates ();
 
 				if (indexPath.Row == 0)
 				{
 					_addNewProjectHandler?.Invoke ();
 				}
+
 			}
 
 
