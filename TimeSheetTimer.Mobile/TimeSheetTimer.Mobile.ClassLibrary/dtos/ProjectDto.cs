@@ -5,9 +5,8 @@ using System.Text;
 
 namespace TimeSheetTimer.Mobile.ClassLibrary
 {
-	public class ProjectDto
+	public class ProjectDto : Entity
 	{
-		public int Id { get; set; }
 		public string Name { get; set; }
 		public Stack<ProjectTimeRecordDto> RecordStack { get; set; } = new Stack<ProjectTimeRecordDto> ();
 
@@ -32,7 +31,7 @@ namespace TimeSheetTimer.Mobile.ClassLibrary
 		{
 			// if no records exist or the top of the stack has its end time set return and do nothing.
 			//   these indicate Start() was not called first.
-			if (RecordStack.Count == 0 || RecordStack.Peek().EndUTC != null)
+			if (IsRunning() == false)
 				return;
 
 			var currentRecord = RecordStack.Peek ();

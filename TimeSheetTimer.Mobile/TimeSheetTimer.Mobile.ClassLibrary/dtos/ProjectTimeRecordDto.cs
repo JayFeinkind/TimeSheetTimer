@@ -3,10 +3,8 @@ using System.Diagnostics;
 
 namespace TimeSheetTimer.Mobile.ClassLibrary
 {
-	public class ProjectTimeRecordDto
+	public class ProjectTimeRecordDto : Entity
 	{
-		public int Id { get; set; }
-
 		public int ProjectId { get; set; }
 
 		public DateTime? StartUTC { get; set; }

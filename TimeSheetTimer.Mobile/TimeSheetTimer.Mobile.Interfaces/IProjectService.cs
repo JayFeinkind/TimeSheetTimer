@@ -7,7 +7,7 @@ namespace TimeSheetTimer.Mobile.Interfaces
 {
 	public interface IProjectService
 	{
-		Task<List<ProjectDto>> GetProjects ();
+		Task<List<ProjectDto>> GetActiveProjects ();
 		Task<ProjectDto> CreateNewProject (ProjectDto dto);
 		Task<ProjectTimeRecordDto> CreateNewRecord(ProjectTimeRecordDto dto);
 		Task DeleteRecords(List<ProjectTimeRecordDto> records);

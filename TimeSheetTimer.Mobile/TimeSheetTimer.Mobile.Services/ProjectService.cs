@@ -33,10 +33,9 @@ namespace TimeSheetTimer.Mobile.Services
 		{
 			var entities = new List<ProjectTimeRecord>();
 
-			foreach (var record in records)
-			{
-				entities.Add(_projectTimeMapper.MapDtoToNewEntity(record));
-			}
+			var existingRecords = await _projectTimeRepository.ReadAllEntities().ConfigureAwait(false);
+
+			entities = existingRecords.Join(records, er => er.Id, nr => nr.Id, (er, nr) => er).ToList();
 
 			if (entities.Count > 0)
 			{
@@ -83,14 +82,14 @@ namespace TimeSheetTimer.Mobile.Services
 			return dto;
 		}
 
-		public async Task<List<ProjectDto>> GetProjects ()
+		public async Task<List<ProjectDto>> GetActiveProjects ()
 		{
 			var projects = new List<ProjectDto> ();
 
 			try
 			{
-				var allProjects = await _projectRepository.ReadAllEntities ().ConfigureAwait (false);
-				var allRecords = await _projectTimeRepository.ReadAllEntities ().ConfigureAwait (false);
+				var allProjects = await _projectRepository.ReadAllEntitiesWhere (e => e.IsDeleted == false).ConfigureAwait (false);
+				var allRecords = await _projectTimeRepository.ReadAllEntitiesWhere (e => e.IsDeleted == false).ConfigureAwait (false);
 
 				foreach (var project in allProjects)
 				{

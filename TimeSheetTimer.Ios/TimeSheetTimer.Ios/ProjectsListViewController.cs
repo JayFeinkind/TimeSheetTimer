@@ -30,7 +30,7 @@ namespace TimeSheetTimer.Ios
 			if (NavigationItem != null)
 			{
 				var clearAllButton = new UIBarButtonItem();
-				var stopAll = new UIBarButtonItem();
+				//var stopAll = new UIBarButtonItem();
 
 				clearAllButton.SetTitleTextAttributes(new UITextAttributes
 				{
@@ -38,20 +38,20 @@ namespace TimeSheetTimer.Ios
 					Font = UIFont.BoldSystemFontOfSize(18)
 				}, UIControlState.Normal);
 
-				stopAll.SetTitleTextAttributes(new UITextAttributes
-				{
-					TextColor = UIColor.Orange,
-					Font = UIFont.BoldSystemFontOfSize(18)
-				}, UIControlState.Normal);
+				//stopAll.SetTitleTextAttributes(new UITextAttributes
+				//{
+				//	TextColor = UIColor.Orange,
+				//	Font = UIFont.BoldSystemFontOfSize(18)
+				//}, UIControlState.Normal);
 
-				stopAll.Title = "Stop All";
-				stopAll.Clicked += StopAllClicked;
+				//stopAll.Title = "Stop All";
+				//stopAll.Clicked += StopAllClicked;
 
 				clearAllButton.Title = "Clear All";
 				clearAllButton.Clicked += ClearAllClicked;
 
 				NavigationItem.RightBarButtonItem = clearAllButton;
-				NavigationItem.LeftBarButtonItem = stopAll;
+				//NavigationItem.LeftBarButtonItem = stopAll;
 			}
 
 			_viewModel.NewProjectSaved += NewProjectSaved;
@@ -79,25 +79,21 @@ namespace TimeSheetTimer.Ios
 			}
 		}
 
-		private void StopAllClicked(object sender, EventArgs args)
-		{
-			foreach (var project in _viewModel.AllProjects)
-			{
-				project.Stop();
+		//private void StopAllClicked(object sender, EventArgs args)
+		//{
+		//	foreach (var project in _viewModel.AllProjects)
+		//	{
+		//		project.Stop();
+		//	}
 
-				project.RecordStack.Clear();
-			}
-
-			_projectsTableView?.ReloadData();
-		}
+		//	_projectsTableView?.ReloadData();
+		//}
 
 		private async void ClearAllClicked(object sender, EventArgs args)
 		{
 			foreach (var project in _viewModel.AllProjects)
 			{
 				await _viewModel.DeleteRecords(project.RecordStack.Where(r => r.Id != 0).ToList());
-
-				project.RecordStack.Clear();
 			}
 
 			_projectsTableView?.ReloadData();
@@ -249,7 +245,6 @@ namespace TimeSheetTimer.Ios
 					async (action, path) => 
 					{ 
 						await _viewModel.DeleteRecords(project.RecordStack.ToList());
-						project.RecordStack.Clear();
 
 						tableView.BeginUpdates();
 						tableView.ReloadRows(new NSIndexPath[] { indexPath }, UITableViewRowAnimation.Automatic);
@@ -282,26 +277,38 @@ namespace TimeSheetTimer.Ios
 				return 1 + _viewModel.AllProjects.Count;
 			}
 
-			public async override void RowSelected (UITableView tableView, NSIndexPath indexPath)
+			private async Task TimerRowPressed(NSIndexPath atIndex)
 			{
-				if (indexPath.Row != 0)
+				if (atIndex.Row != 0)
 				{
-					var project = _viewModel.AllProjects [indexPath.Row - 1];
+					var project = _viewModel.AllProjects[atIndex.Row - 1];
 
-					if (project.IsRunning ())
+					if (project.IsRunning())
 					{
-						project.Stop ();
+						project.Stop();
 						await _viewModel.SaveTimeRecord(project.RecordStack.Peek());
 					}
 					else
 					{
-						project.Start ();
+						project.Start();
+					}
+
+					if (_lastSelectedRow != null && atIndex.Row != _lastSelectedRow.Row && _lastSelectedRow.Row != 0)
+					{
+						var lastProject = _viewModel.AllProjects[_lastSelectedRow.Row - 1];
+						lastProject.Stop();
+						await _viewModel.SaveTimeRecord(lastProject.RecordStack.Peek());
 					}
 				}
+			}
 
-				var paths = new List<NSIndexPath>() { indexPath };
+			public async override void RowSelected (UITableView tableView, NSIndexPath indexPath)
+			{
+				await TimerRowPressed(indexPath);
 
-				if (_lastSelectedRow != null && _lastSelectedRow.Row == 0)
+				var paths = new List<NSIndexPath> { indexPath };
+
+				if (_lastSelectedRow != null)
 				{
 					paths.Add(_lastSelectedRow);
 				}
@@ -312,6 +319,7 @@ namespace TimeSheetTimer.Ios
 				tableView.ReloadRows (paths.ToArray(), UITableViewRowAnimation.None);
 				tableView.EndUpdates ();
 
+				// shows the new project pop up
 				if (indexPath.Row == 0)
 				{
 					_addNewProjectHandler?.Invoke ();

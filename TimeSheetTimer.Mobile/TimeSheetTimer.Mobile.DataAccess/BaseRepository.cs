@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
@@ -29,16 +30,16 @@ namespace TimeSheetTimer.Mobile.DataAccess
 
             try
             {
-                if ((await action(entityList)) < 0)
+				int rowsAffected = await action(entityList);
+
+                if (rowsAffected < 0)
                 {
                     throw new Exception("Error occurred");
                 }
                 else
                 {
-                  
                     result = entityList;
                 }
-
             }
             catch (Exception e)
             {
@@ -54,7 +55,9 @@ namespace TimeSheetTimer.Mobile.DataAccess
 
             try
             {
-                if ((await action(entityList)) < 0)
+				int rowsAffected = await action(entityList);
+
+                if (rowsAffected < 0)
                 {
                     throw new Exception("Error occurred");
                 }
@@ -82,10 +85,13 @@ namespace TimeSheetTimer.Mobile.DataAccess
             {
                 result = await _context.Instance.Table<TEntity>().Where(predicate).ToListAsync();
             }
-			catch (SQLite.SQLiteException)
+			catch (SQLite.SQLiteException exc)
 			{
-				await _context.Instance.CreateTableAsync<TEntity> ();
-				await ReadAllEntitiesWhere (predicate);
+				if (exc.Message.Contains("no such table"))
+				{
+					await _context.Instance.CreateTableAsync<TEntity>();
+					await ReadAllEntitiesWhere(predicate);
+				}
 			}
             catch (Exception e)
             {
@@ -103,10 +109,13 @@ namespace TimeSheetTimer.Mobile.DataAccess
 			{
 				result = await _context.Instance.Table<TEntity> ().ToListAsync ();
 			}
-			catch (SQLite.SQLiteException)
+			catch (SQLite.SQLiteException exc)
 			{
-				await _context.Instance.CreateTableAsync<TEntity> ();
-				await ReadAllEntities ();
+				if (exc.Message.Contains("no such table"))
+				{
+					await _context.Instance.CreateTableAsync<TEntity>();
+					await ReadAllEntities();
+				}
 			}
 			catch (Exception e)
 			{
@@ -126,10 +135,13 @@ namespace TimeSheetTimer.Mobile.DataAccess
             {
                 result = await _context.Instance.Table<TEntity>().Where(predicate).FirstOrDefaultAsync();
             }
-			catch (SQLite.SQLiteException)
+			catch (SQLite.SQLiteException exc)
 			{
-				await _context.Instance.CreateTableAsync<TEntity> ();
-				await ReadEntityWhere (predicate);
+				if (exc.Message.Contains("no such table"))
+				{
+					await _context.Instance.CreateTableAsync<TEntity>();
+					await ReadEntityWhere(predicate);
+				}
 			}
             catch (Exception e)
             {
@@ -144,17 +156,28 @@ namespace TimeSheetTimer.Mobile.DataAccess
 
         public virtual async Task<List<TEntity>> UpdateAllEntities(List<TEntity> entities)
         {
-            return await ModifyEntities(entities, _context.Instance.UpdateAllAsync).ConfigureAwait(false);
+            return await ModifyEntities(entities, _context.Instance.UpdateAllAsync);
         }
 
         public virtual async Task DeleteAllEntities(List<TEntity> entities)
         {
-            //sqlite does not support multiple deletes
+            //Do not actually delete records, just set the delete flag
             foreach (var entity in entities)
             {
-                var result = await ModifyEntity(entity, _context.Instance.DeleteAsync).ConfigureAwait(false);
+				entity.IsDeleted = true;
             }
+
+			await UpdateAllEntities(entities);
         }
+
+		public virtual async Task PermanentlyDeleteAll(List<TEntity> entities)
+		{
+			//sqlite does not support multiple deletes
+			foreach (var entity in entities)
+			{
+				await ModifyEntity(entity, _context.Instance.DeleteAsync);
+			}
+		}
 
         // create entity or update if it already exists
         public virtual async Task<List<TEntity>> CreateAllEntities(List<TEntity> entities)
@@ -163,7 +186,7 @@ namespace TimeSheetTimer.Mobile.DataAccess
 
             try
             {
-                createResult = await ModifyEntities(entities, _context.Instance.InsertAllAsync).ConfigureAwait(false);               
+                createResult = await ModifyEntities(entities, _context.Instance.InsertAllAsync);               
             }
 			catch (SQLite.SQLiteException)
 			{

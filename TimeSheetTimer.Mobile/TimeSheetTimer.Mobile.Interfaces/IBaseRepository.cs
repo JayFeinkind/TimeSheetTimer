@@ -15,6 +15,7 @@ namespace TimeSheetTimer.Mobile.Interfaces
         Task<List<TEntity>> UpdateAllEntities(List<TEntity> entities);
         Task<List<TEntity>> CreateAllEntities(List<TEntity> entities);
         Task DeleteAllEntities(List<TEntity> entities);
+		Task PermanentlyDeleteAll(List<TEntity> entities);
        
     }
 }

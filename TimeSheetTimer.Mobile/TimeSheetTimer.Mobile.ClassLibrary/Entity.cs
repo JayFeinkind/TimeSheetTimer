@@ -7,5 +7,7 @@ namespace TimeSheetTimer.Mobile.ClassLibrary
 	{
 		[PrimaryKey, AutoIncrement, Column ("Id")]
 		public int Id { get; set; }
+
+		public bool IsDeleted { get; set; }
 	}
 }

@@ -114,7 +114,7 @@
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
-                                <color key="separatorColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <color key="separatorColor" colorSpace="calibratedWhite" white="0.333333333333333" alpha="1"/>
                             </tableView>
                         </subviews>
                         <constraints>

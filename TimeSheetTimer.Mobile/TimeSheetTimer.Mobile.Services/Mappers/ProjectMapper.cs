@@ -7,12 +7,14 @@ namespace TimeSheetTimer.Mobile.Services
 	{
 		public void MapEntityToDto (Project entity, ProjectDto dto)
 		{
+			dto.IsDeleted = entity.IsDeleted;
 			dto.Id = entity.Id;
 			dto.Name = dto.Name;
 		}
 
 		public void MapDtoToEntity (Project entity, ProjectDto dto)
 		{
+			entity.IsDeleted = dto.IsDeleted;
 			entity.Id = dto.Id;
 			entity.Name = dto.Name;
 		}
@@ -21,6 +23,7 @@ namespace TimeSheetTimer.Mobile.Services
 		{
 			var dto = new ProjectDto();
 
+			dto.IsDeleted = entity.IsDeleted;
 			dto.Id = entity.Id;
 			dto.Name = entity.Name;
 
@@ -31,6 +34,7 @@ namespace TimeSheetTimer.Mobile.Services
 		{
 			var entity = new Project ();
 
+			entity.IsDeleted = dto.IsDeleted;
 			entity.Id = dto.Id;
 			entity.Name = dto.Name;
 

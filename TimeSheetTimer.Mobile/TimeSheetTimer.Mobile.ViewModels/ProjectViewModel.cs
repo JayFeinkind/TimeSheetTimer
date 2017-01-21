@@ -31,12 +31,17 @@ namespace TimeSheetTimer.Mobile.ViewModels
 
 		public async Task ReadProjects()
 		{
-			AllProjects = await _projectService.GetProjects();
+			AllProjects = await _projectService.GetActiveProjects();
 		}
 
 		public async Task SaveTimeRecord(ProjectTimeRecordDto record)
 		{
-			await _projectService.CreateNewRecord(record);
+			var newRecord = await _projectService.CreateNewRecord(record);
+
+			var project = AllProjects.Find(p => p.Id == record.ProjectId);
+
+			project.RecordStack.Pop();
+			project.RecordStack.Push(newRecord);
 		}
 
 		public async Task DeleteRecords(List<ProjectTimeRecordDto> records)
