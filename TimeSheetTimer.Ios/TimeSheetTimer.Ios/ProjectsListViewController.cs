@@ -30,7 +30,9 @@ namespace TimeSheetTimer.Ios
 			if (NavigationItem != null)
 			{
 				var clearAllButton = new UIBarButtonItem();
-				//var stopAll = new UIBarButtonItem();
+				var actions = new UIBarButtonItem (UIBarButtonSystemItem.Action);
+
+				actions.TintColor = UIColor.Black;
 
 				clearAllButton.SetTitleTextAttributes(new UITextAttributes
 				{
@@ -38,20 +40,13 @@ namespace TimeSheetTimer.Ios
 					Font = UIFont.BoldSystemFontOfSize(18)
 				}, UIControlState.Normal);
 
-				//stopAll.SetTitleTextAttributes(new UITextAttributes
-				//{
-				//	TextColor = UIColor.Orange,
-				//	Font = UIFont.BoldSystemFontOfSize(18)
-				//}, UIControlState.Normal);
-
-				//stopAll.Title = "Stop All";
-				//stopAll.Clicked += StopAllClicked;
-
 				clearAllButton.Title = "Clear All";
-				clearAllButton.Clicked += ClearAllClicked;
 
-				NavigationItem.RightBarButtonItem = clearAllButton;
-				//NavigationItem.LeftBarButtonItem = stopAll;
+				clearAllButton.Clicked += ClearAllClicked;
+				actions.Clicked += ShowActionSheet;
+
+				NavigationItem.RightBarButtonItem = actions;
+				NavigationItem.LeftBarButtonItem = clearAllButton;
 			}
 
 			_viewModel.NewProjectSaved += NewProjectSaved;
@@ -79,15 +74,27 @@ namespace TimeSheetTimer.Ios
 			}
 		}
 
-		//private void StopAllClicked(object sender, EventArgs args)
-		//{
-		//	foreach (var project in _viewModel.AllProjects)
-		//	{
-		//		project.Stop();
-		//	}
+		private async void ShowActionSheet(object sender, EventArgs args)
+		{
+			var popUp = UIAlertController.Create(null, null, UIAlertControllerStyle.ActionSheet);
 
-		//	_projectsTableView?.ReloadData();
-		//}
+			if (popUp.PopoverPresentationController != null)
+			{
+				popUp.PopoverPresentationController.BarButtonItem = sender as UIBarButtonItem;
+				popUp.PopoverPresentationController.PermittedArrowDirections = UIPopoverArrowDirection.Up;
+			}
+
+			popUp.AddAction(UIAlertAction.Create("Statistics", UIAlertActionStyle.Default, null));
+
+			if (UIDevice.CurrentDevice.UserInterfaceIdiom != UIUserInterfaceIdiom.Pad)
+			{
+				popUp.AddAction(UIAlertAction.Create("Cancel", UIAlertActionStyle.Cancel, async (action) => {
+					await popUp.DismissViewControllerAsync(true);
+				}));
+			}
+
+			await PresentViewControllerAsync(popUp, true);
+		}
 
 		private async void ClearAllClicked(object sender, EventArgs args)
 		{

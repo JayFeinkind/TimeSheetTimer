@@ -46,7 +46,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="550" height="78.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="82" translatesAutoresizingMaskIntoConstraints="NO" text="New Project">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="wordWrap" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="82" translatesAutoresizingMaskIntoConstraints="NO" text="New Project" numberOfLines="0">
                                                     <rect key="frame" x="35" y="25" width="412" height="29.5"/>
                                                     <color key="textColor" colorSpace="calibratedRGB" red="0.93333333333333335" green="0.47450980392156861" blue="0.070588235294117646" alpha="1"/>
                                                     <nil key="highlightedColor"/>
@@ -82,14 +82,14 @@
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Project Name" textAlignment="natural" lineBreakMode="wordWrap" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="103" translatesAutoresizingMaskIntoConstraints="NO" numberOfLines="0">
                                                     <rect key="frame" x="35" y="20" width="309" height="58.5"/>
-                                                    <fontDescription key="fontDescription" type="boldSystem" pointSize="24"/>
+                                                    <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                     <constraints>
                                                         <constraint id="108" firstItem="103" firstAttribute="height" constant="40" relation="greaterThanOrEqual"/>
                                                     </constraints>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="109" translatesAutoresizingMaskIntoConstraints="NO" text="Time">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="wordWrap" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="109" translatesAutoresizingMaskIntoConstraints="NO" text="Time 40h 50m 50s" numberOfLines="0">
                                                     <rect key="frame" x="380" y="38.5" width="160" height="21.5"/>
                                                     <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
                                                     <nil key="textColor"/>
@@ -105,7 +105,7 @@
                                                 <constraint id="107" firstItem="98" firstAttribute="bottom" secondItem="103" secondAttribute="bottom" constant="20"/>
                                                 <constraint id="110" firstItem="109" firstAttribute="centerY" secondItem="103" secondAttribute="centerY"/>
                                                 <constraint id="111" firstItem="98" firstAttribute="trailing" secondItem="109" secondAttribute="trailing" constant="10"/>
-                                                <constraint id="113" firstItem="109" firstAttribute="leading" secondItem="103" secondAttribute="trailing" constant="36"/>
+                                                <constraint id="113" firstItem="109" firstAttribute="leading" secondItem="103" secondAttribute="trailing" constant="20"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
