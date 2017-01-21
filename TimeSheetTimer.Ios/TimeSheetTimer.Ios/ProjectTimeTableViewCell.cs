@@ -39,6 +39,22 @@ namespace TimeSheetTimer.Ios
 			}
 		}
 
+		public override void LayoutSubviews()
+		{
+			base.LayoutSubviews();
+
+			if (TraitCollection.HorizontalSizeClass == UIUserInterfaceSizeClass.Compact)
+			{
+				_nameLabel.Font = UIFont.BoldSystemFontOfSize(18);
+				_timeLabel.Font = UIFont.SystemFontOfSize(16);
+			}
+			else
+			{
+				_nameLabel.Font = UIFont.BoldSystemFontOfSize(24);
+				_timeLabel.Font = UIFont.SystemFontOfSize(18);
+			}
+		}
+
 		public void UpdateCell (ProjectDto dto)
 		{
 			try

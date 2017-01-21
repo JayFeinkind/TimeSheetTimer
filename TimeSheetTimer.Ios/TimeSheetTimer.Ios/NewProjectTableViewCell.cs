@@ -12,5 +12,19 @@ namespace TimeSheetTimer.Ios
         {
         }
 
+		public override void LayoutSubviews()
+		{
+			base.LayoutSubviews();
+
+			if (TraitCollection.HorizontalSizeClass == UIUserInterfaceSizeClass.Compact)
+			{
+				_titleLabel.Font = UIFont.BoldSystemFontOfSize(18);
+			}
+			else
+			{
+				_titleLabel.Font = UIFont.BoldSystemFontOfSize(24);
+			}
+		}
+
     }
 }

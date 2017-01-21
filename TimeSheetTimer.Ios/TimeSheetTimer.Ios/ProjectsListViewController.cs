@@ -12,7 +12,7 @@ namespace TimeSheetTimer.Ios
     {
 		ProjectViewModel _viewModel = AppDelegate.DependencyService.Resolve<ProjectViewModel>();
 
-		public static UIColor DefaultTextColor = UIColor.FromRGB(11, 211, 0);
+		public static UIColor DefaultTextColor = UIColor.FromRGB(138, 222, 69); //UIColor.FromRGB(11, 211, 0);
 
         public ProjectsListViewController (IntPtr handle) : base (handle)
         {
@@ -248,7 +248,7 @@ namespace TimeSheetTimer.Ios
 
 				UITableViewRowAction editAction = UITableViewRowAction.Create(
 					UITableViewRowActionStyle.Default,
-					"Clear",
+					"Clear Time",
 					async (action, path) => 
 					{ 
 						await _viewModel.DeleteRecords(project.RecordStack.ToList());
@@ -263,7 +263,7 @@ namespace TimeSheetTimer.Ios
 
 				UITableViewRowAction deleteAction = UITableViewRowAction.Create(
 					UITableViewRowActionStyle.Default,
-					"Delete",
+					"Delete Project",
 					async (action, path) =>
 					{
 						await _viewModel.DeleteProject(project);
