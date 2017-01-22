@@ -29,6 +29,8 @@ namespace TimeSheetTimer.Ios
 
 			if (NavigationItem != null)
 			{
+				NavigationItem.Title = "Project Timers";
+
 				var clearAllButton = new UIBarButtonItem();
 				var actions = new UIBarButtonItem (UIBarButtonSystemItem.Action);
 
@@ -66,25 +68,61 @@ namespace TimeSheetTimer.Ios
 			{
 				await _viewModel?.Start ();
 
-				_projectsTableView.Source = new ProjectListTableViewSource (_viewModel, ShowNewProjectDialog);
-				_projectsTableView.ReloadData ();
+				SetTableType(ProjectListDisplayType.Timer);
 			}
 			catch (Exception e)
 			{
 			}
 		}
 
+		private void SetTableType(ProjectListDisplayType displayType)
+		{
+			if (NavigationItem != null)
+			{
+				switch (displayType)
+				{
+					case ProjectListDisplayType.Timer:
+						NavigationItem.Title = "Project Timers";
+						break;
+					case ProjectListDisplayType.Stat:
+						NavigationItem.Title = "Project Statistics";
+						break;
+				}
+			}
+
+			_projectsTableView.AllowsSelection = displayType != ProjectListDisplayType.Stat;
+
+			_projectsTableView.Source = new ProjectListTableViewSource(_viewModel, ShowNewProjectDialog, displayType);
+			_projectsTableView.ReloadData();
+		}
+
 		private async void ShowActionSheet(object sender, EventArgs args)
 		{
-			var popUp = UIAlertController.Create(null, null, UIAlertControllerStyle.ActionSheet);
+			var popUp = UIAlertController.Create("Page Display", "Change current page display type", UIAlertControllerStyle.ActionSheet);
 
+			// on iPhone PopoverPresentationController will be null as action sheets show from the bottom
+			//   of the screen on iPhones. On iPad you can specify where the action sheet shows.
 			if (popUp.PopoverPresentationController != null)
 			{
 				popUp.PopoverPresentationController.BarButtonItem = sender as UIBarButtonItem;
 				popUp.PopoverPresentationController.PermittedArrowDirections = UIPopoverArrowDirection.Up;
 			}
 
-			popUp.AddAction(UIAlertAction.Create("Statistics", UIAlertActionStyle.Default, null));
+			var source = _projectsTableView?.Source as ProjectListTableViewSource;
+
+			if (source?.CurrentDisplayType != ProjectListDisplayType.Timer)
+			{
+				popUp.AddAction(UIAlertAction.Create("Timer", UIAlertActionStyle.Default, (action) => {
+					SetTableType(ProjectListDisplayType.Timer);
+				}));
+			}
+
+			if (source?.CurrentDisplayType != ProjectListDisplayType.Stat)
+			{
+				popUp.AddAction(UIAlertAction.Create("Statistics", UIAlertActionStyle.Default, (action) => {
+					SetTableType(ProjectListDisplayType.Stat);
+				}));
+			}
 
 			if (UIDevice.CurrentDevice.UserInterfaceIdiom != UIUserInterfaceIdiom.Pad)
 			{
@@ -193,32 +231,47 @@ namespace TimeSheetTimer.Ios
 			PresentViewController (alert, true, null);
 		}
 
+		internal enum ProjectListDisplayType
+		{
+			Timer,
+			Stat
+		}
+
 		internal class ProjectListTableViewSource : UITableViewSource
 		{
 			ProjectViewModel _viewModel;
-
-			NSIndexPath _lastSelectedRow;
 			Action _addNewProjectHandler;
+			ProjectListDisplayType _displayType;
+			NSIndexPath _lastSelectedIndex;
 
-			public ProjectListTableViewSource (ProjectViewModel viewModel, Action AddNewProjectHandler)
+			public ProjectListDisplayType CurrentDisplayType
 			{
+				get
+				{
+					return _displayType; 
+				}
+			}
+
+			public ProjectListTableViewSource (ProjectViewModel viewModel, Action AddNewProjectHandler, ProjectListDisplayType type)
+			{
+				_displayType = type;
 				_addNewProjectHandler = AddNewProjectHandler;
 				_viewModel = viewModel;
 			}
 
-			public override UITableViewCell GetCell (UITableView tableView, NSIndexPath indexPath)
+			private UITableViewCell GetTimerCell(UITableView tableView, NSIndexPath indexPath)
 			{
 				if (indexPath.Row == 0)
 				{
-					var cell = tableView.DequeueReusableCell ("NewProjectTableViewCell") as NewProjectTableViewCell;
+					var cell = tableView.DequeueReusableCell("NewProjectTableViewCell") as NewProjectTableViewCell;
 
-					if (indexPath.Row == _lastSelectedRow?.Row)
+					if (indexPath.Row == _lastSelectedIndex?.Row)
 					{
-						cell.BackgroundColor = UIColor.FromRGBA (0, 0, 0, 0.25f);
+						cell.BackgroundColor = UIColor.FromRGBA(0, 0, 0, 0.25f);
 					}
 					else
 					{
-						cell.BackgroundColor = UIColor.FromRGBA (0, 0, 0, 0);
+						cell.BackgroundColor = UIColor.FromRGBA(0, 0, 0, 0);
 					}
 
 					cell.Label.TextColor = DefaultTextColor;
@@ -228,18 +281,54 @@ namespace TimeSheetTimer.Ios
 				}
 				else
 				{
-					var cell = tableView.DequeueReusableCell ("ProjectTimeTableViewCell") as ProjectTimeTableViewCell;
-					var project = _viewModel?.AllProjects [indexPath.Row - 1];
+					var cell = tableView.DequeueReusableCell("ProjectTimeTableViewCell") as ProjectTimeTableViewCell;
+					var project = _viewModel?.AllProjects[indexPath.Row - 1];
 					cell.SelectionStyle = UITableViewCellSelectionStyle.None;
 
-					cell.UpdateCell (project);
+					cell.UpdateCell(project);
 					return cell;
+				}
+			}
+
+			private UITableViewCell GetStatCell(UITableView tableView, NSIndexPath indexPath)
+			{
+				var project = _viewModel?.AllProjects[indexPath.Row];
+
+				var cell = tableView.DequeueReusableCell("ProjectStatTableViewCell") as ProjectStatTableViewCell;
+
+				cell.BackgroundColor = UIColor.FromRGBA(0, 0, 0, 0);
+
+				double projectSum = project.RecordStack.Sum(r => r.Seconds);
+				double totalSum = _viewModel.AllProjects.Sum(p => p.RecordStack.Sum(r => r.Seconds));
+
+				cell.Project = project;
+				cell.Percentage = Math.Round(((projectSum / totalSum) * 100), 1, MidpointRounding.AwayFromZero);
+				cell.SelectionStyle = UITableViewCellSelectionStyle.None;
+
+				return cell;
+			}
+
+			public override UITableViewCell GetCell (UITableView tableView, NSIndexPath indexPath)
+			{
+				switch (_displayType)
+				{
+					case ProjectListDisplayType.Stat:
+						return GetStatCell(tableView, indexPath);
+					default:
+						return GetTimerCell(tableView, indexPath);
 				}
 			}
 
 			public override bool CanEditRow(UITableView tableView, NSIndexPath indexPath)
 			{
-				return indexPath.Row != 0;
+				switch (_displayType)
+				{
+					case ProjectListDisplayType.Timer:
+						return indexPath.Row != 0;
+					default:
+						return false;
+				}
+
 			}
 
 			public override UITableViewRowAction[] EditActionsForRow(UITableView tableView, NSIndexPath indexPath)
@@ -281,11 +370,25 @@ namespace TimeSheetTimer.Ios
 
 			public override nint RowsInSection (UITableView tableview, nint section)
 			{
-				return 1 + _viewModel.AllProjects.Count;
+				switch (_displayType)
+				{
+					case ProjectListDisplayType.Timer:
+						return 1 + _viewModel.AllProjects.Count;
+					default:
+						return _viewModel.AllProjects.Count;
+				}
+
 			}
 
-			private async Task TimerRowPressed(NSIndexPath atIndex)
+			/// <summary>
+			/// Handles the timer row pressed.
+			/// </summary>
+			/// <returns>List of IndexPath's indicating which rows have changed.</returns>
+			/// <param name="atIndex">At index.</param>
+			private async Task<List<NSIndexPath>> HandleTimerPressed(NSIndexPath atIndex)
 			{
+				var indexPaths = new List<NSIndexPath>() { atIndex };
+
 				if (atIndex.Row != 0)
 				{
 					var project = _viewModel.AllProjects[atIndex.Row - 1];
@@ -298,40 +401,68 @@ namespace TimeSheetTimer.Ios
 					else
 					{
 						project.Start();
-					}
 
-					if (_lastSelectedRow != null && atIndex.Row != _lastSelectedRow.Row && _lastSelectedRow.Row != 0)
-					{
-						var lastProject = _viewModel.AllProjects[_lastSelectedRow.Row - 1];
-						lastProject.Stop();
-						await _viewModel.SaveTimeRecord(lastProject.RecordStack.Peek());
+						var runningProjects = _viewModel.AllProjects.FindAll(p => p.IsRunning() && p.Id != project.Id);
+
+						foreach (var proj in runningProjects)
+						{
+							proj.Stop();
+							await _viewModel.SaveTimeRecord(proj.RecordStack.Peek());
+
+							indexPaths.Add(NSIndexPath.FromRowSection(_viewModel.AllProjects.IndexOf(proj) + 1, 0));
+						}
 					}
+				}
+
+				return indexPaths;
+			}
+
+			private async Task TimerRowSelected (UITableView tableView, NSIndexPath indexPath)
+			{
+				var affectedPaths = await HandleTimerPressed(indexPath);
+
+				var paths = new List<NSIndexPath> { indexPath };
+				paths.AddRange(affectedPaths);
+
+				if (_lastSelectedIndex != null && _lastSelectedIndex.Row == 0 && indexPath.Row != 0)
+				{
+					paths.Add(NSIndexPath.FromRowSection(0, 0));
+				}
+
+				_lastSelectedIndex = indexPath;
+
+				tableView.BeginUpdates();
+				tableView.ReloadRows(paths.ToArray(), UITableViewRowAnimation.None);
+				tableView.EndUpdates();
+
+				// shows the new project pop up
+				if (indexPath.Row == 0)
+				{
+					_addNewProjectHandler?.Invoke();
 				}
 			}
 
 			public async override void RowSelected (UITableView tableView, NSIndexPath indexPath)
 			{
-				await TimerRowPressed(indexPath);
-
-				var paths = new List<NSIndexPath> { indexPath };
-
-				if (_lastSelectedRow != null)
+				switch (_displayType)
 				{
-					paths.Add(_lastSelectedRow);
+					case ProjectListDisplayType.Timer:
+						await TimerRowSelected(tableView, indexPath);
+						break;
 				}
 
-				_lastSelectedRow = indexPath;
+				//if ((indexPath.Row == 0 || _lastSelectedIndex?.Row == 0) && _displayType == ProjectListDisplayType.Timer)
+				//{
+				//	_lastSelectedIndex = indexPath;
 
-				tableView.BeginUpdates ();
-				tableView.ReloadRows (paths.ToArray(), UITableViewRowAnimation.None);
-				tableView.EndUpdates ();
-
-				// shows the new project pop up
-				if (indexPath.Row == 0)
-				{
-					_addNewProjectHandler?.Invoke ();
-				}
-
+				//	tableView.BeginUpdates();
+				//	tableView.ReloadRows(new NSIndexPath[] { NSIndexPath.FromRowSection(0, 0) }, UITableViewRowAnimation.None);
+				//	tableView.EndUpdates();
+				//}
+				//else
+				//{
+				//	_lastSelectedIndex = indexPath;
+				//}
 			}
 
 

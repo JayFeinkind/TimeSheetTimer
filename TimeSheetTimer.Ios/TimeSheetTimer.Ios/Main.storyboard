@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16C67" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="13">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
     <dependencies>
+        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--View Controller-->
+        <!--Navigation Controller-->
         <scene sceneID="12">
             <objects>
                 <navigationController id="13" sceneMemberID="viewController">
@@ -14,16 +18,17 @@
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
-                        <segue id="56" destination="22" kind="relationship" relationship="rootViewController"/>
+                        <segue destination="22" kind="relationship" relationship="rootViewController" id="56"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="16" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-477" y="142"/>
         </scene>
+        <!--Projects-->
         <scene sceneID="21">
             <objects>
-                <viewController id="22" sceneMemberID="viewController" customClass="ProjectsListViewController" storyboardIdentifier="ProjectsListViewController" useStoryboardIdentifierAsRestorationIdentifier="YES">
+                <viewController storyboardIdentifier="ProjectsListViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="22" customClass="ProjectsListViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="19"/>
                         <viewControllerLayoutGuide type="bottom" id="20"/>
@@ -31,50 +36,51 @@
                     <view key="view" contentMode="scaleToFill" id="23">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="64" translatesAutoresizingMaskIntoConstraints="NO" image="BlueGradient">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="BlueGradient" translatesAutoresizingMaskIntoConstraints="NO" id="64">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                             </imageView>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="71" translatesAutoresizingMaskIntoConstraints="NO">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="71">
                                 <rect key="frame" x="25" y="89" width="550" height="486"/>
+                                <color key="separatorColor" red="0.40781933069229126" green="0.40781933069229126" blue="0.40781933069229126" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="72" rowHeight="79" customClass="NewProjectTableViewCell" reuseIdentifier="NewProjectTableViewCell">
-                                        <rect key="frame" x="0.0" y="28" width="550" height="79"/>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="NewProjectTableViewCell" rowHeight="60" id="72" customClass="NewProjectTableViewCell">
+                                        <rect key="frame" x="0.0" y="28" width="550" height="60"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="72" id="73">
-                                            <rect key="frame" x="0.0" y="0.0" width="550" height="78.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="550" height="59.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="wordWrap" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="82" translatesAutoresizingMaskIntoConstraints="NO" text="New Project" numberOfLines="0">
-                                                    <rect key="frame" x="35" y="25" width="412" height="29.5"/>
-                                                    <color key="textColor" colorSpace="calibratedRGB" red="0.93333333333333335" green="0.47450980392156861" blue="0.070588235294117646" alpha="1"/>
-                                                    <nil key="highlightedColor"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="New Project" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="82">
+                                                    <rect key="frame" x="35" y="25" width="187" height="10.5"/>
                                                     <fontDescription key="fontDescription" type="boldSystem" pointSize="24"/>
+                                                    <color key="textColor" red="0.95402604341506958" green="0.55183988809585571" blue="0.074918635189533234" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <nil key="highlightedColor"/>
                                                 </label>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="83" translatesAutoresizingMaskIntoConstraints="NO" image="GreenPlus">
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="GreenPlus" translatesAutoresizingMaskIntoConstraints="NO" id="83">
                                                     <rect key="frame" x="457" y="19" width="40" height="40"/>
                                                     <constraints>
-                                                        <constraint id="86" firstItem="83" firstAttribute="height" constant="40"/>
-                                                        <constraint id="87" firstItem="83" firstAttribute="width" constant="40"/>
+                                                        <constraint firstAttribute="height" constant="40" id="86"/>
+                                                        <constraint firstAttribute="width" constant="40" id="87"/>
                                                     </constraints>
                                                 </imageView>
                                             </subviews>
                                             <constraints>
-                                                <constraint id="85" firstItem="82" firstAttribute="leading" secondItem="73" secondAttribute="leading" constant="35"/>
-                                                <constraint id="88" firstItem="83" firstAttribute="centerY" secondItem="73" secondAttribute="centerY"/>
-                                                <constraint id="89" firstItem="73" firstAttribute="trailing" secondItem="83" secondAttribute="trailing" constant="53"/>
-                                                <constraint id="90" firstItem="83" firstAttribute="leading" secondItem="82" secondAttribute="trailing" constant="10"/>
-                                                <constraint id="91" firstItem="82" firstAttribute="top" secondItem="73" secondAttribute="top" constant="25"/>
-                                                <constraint id="92" firstItem="73" firstAttribute="bottom" secondItem="82" secondAttribute="bottom" constant="24"/>
-                                                <constraint id="119" firstItem="82" firstAttribute="leading" secondItem="73" secondAttribute="leading" constant="35">
+                                                <constraint firstItem="82" firstAttribute="leading" secondItem="73" secondAttribute="leading" constant="35" id="85"/>
+                                                <constraint firstItem="83" firstAttribute="centerY" secondItem="73" secondAttribute="centerY" id="88"/>
+                                                <constraint firstAttribute="trailing" secondItem="83" secondAttribute="trailing" constant="53" id="89"/>
+                                                <constraint firstItem="83" firstAttribute="leading" secondItem="82" secondAttribute="trailing" constant="10" id="90"/>
+                                                <constraint firstItem="82" firstAttribute="top" secondItem="73" secondAttribute="top" constant="25" id="91"/>
+                                                <constraint firstAttribute="bottom" secondItem="82" secondAttribute="bottom" constant="24" id="92"/>
+                                                <constraint firstItem="82" firstAttribute="leading" secondItem="73" secondAttribute="leading" constant="35" id="119">
                                                     <variation key="widthClass=compact" constant="5"/>
                                                 </constraint>
-                                                <constraint id="121" firstItem="82" firstAttribute="leading" secondItem="73" secondAttribute="leading" constant="35"/>
+                                                <constraint firstItem="82" firstAttribute="leading" secondItem="73" secondAttribute="leading" constant="35" id="121"/>
                                             </constraints>
-                                            <variation key="widthClass=regular">
+                                            <variation key="default">
                                                 <mask key="constraints">
-                                                    <include reference="85"/>
+                                                    <exclude reference="85"/>
+                                                    <exclude reference="119"/>
                                                 </mask>
                                             </variation>
                                             <variation key="widthClass=compact">
@@ -83,10 +89,9 @@
                                                     <include reference="119"/>
                                                 </mask>
                                             </variation>
-                                            <variation key="default">
+                                            <variation key="widthClass=regular">
                                                 <mask key="constraints">
-                                                    <exclude reference="85"/>
-                                                    <exclude reference="119"/>
+                                                    <include reference="85"/>
                                                 </mask>
                                             </variation>
                                         </tableViewCellContentView>
@@ -94,47 +99,48 @@
                                             <outlet property="_titleLabel" destination="82" id="name-outlet-82"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="97" rowHeight="99" customClass="ProjectTimeTableViewCell" reuseIdentifier="ProjectTimeTableViewCell">
-                                        <rect key="frame" x="0.0" y="107" width="550" height="99"/>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="ProjectTimeTableViewCell" rowHeight="61" id="97" customClass="ProjectTimeTableViewCell">
+                                        <rect key="frame" x="0.0" y="88" width="550" height="61"/>
                                         <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="97" id="98">
-                                            <rect key="frame" x="0.0" y="0.0" width="550" height="98.5"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" ambiguous="YES" tableViewCell="97" id="98">
+                                            <rect key="frame" x="0.0" y="0.0" width="550" height="60.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Project Name" textAlignment="natural" lineBreakMode="wordWrap" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="103" translatesAutoresizingMaskIntoConstraints="NO" numberOfLines="0">
-                                                    <rect key="frame" x="35" y="20" width="325" height="58.5"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Project Name" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="103">
+                                                    <rect key="frame" x="35" y="20" width="325" height="28"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="40" id="108"/>
+                                                    </constraints>
                                                     <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
-                                                    <constraints>
-                                                        <constraint id="108" firstItem="103" firstAttribute="height" constant="40" relation="greaterThanOrEqual"/>
-                                                    </constraints>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="wordWrap" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="109" translatesAutoresizingMaskIntoConstraints="NO" text="Time 40h 50m 50s" numberOfLines="0">
-                                                    <rect key="frame" x="380" y="38.5" width="160" height="21.5"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Time 40h 50m 50s" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="109">
+                                                    <rect key="frame" x="380" y="19.5" width="160" height="21.5"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="160" id="112"/>
+                                                    </constraints>
                                                     <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
-                                                    <constraints>
-                                                        <constraint id="112" firstItem="109" firstAttribute="width" constant="160"/>
-                                                    </constraints>
                                                 </label>
                                             </subviews>
                                             <constraints>
-                                                <constraint id="105" firstItem="103" firstAttribute="leading" secondItem="98" secondAttribute="leading" constant="35"/>
-                                                <constraint id="106" firstItem="103" firstAttribute="top" secondItem="98" secondAttribute="top" constant="20"/>
-                                                <constraint id="107" firstItem="98" firstAttribute="bottom" secondItem="103" secondAttribute="bottom" constant="20"/>
-                                                <constraint id="110" firstItem="109" firstAttribute="centerY" secondItem="103" secondAttribute="centerY"/>
-                                                <constraint id="111" firstItem="98" firstAttribute="trailing" secondItem="109" secondAttribute="trailing" constant="10"/>
-                                                <constraint id="113" firstItem="109" firstAttribute="leading" secondItem="103" secondAttribute="trailing" constant="20"/>
-                                                <constraint id="118" firstItem="103" firstAttribute="leading" secondItem="98" secondAttribute="leading" constant="35">
+                                                <constraint firstItem="103" firstAttribute="leading" secondItem="98" secondAttribute="leading" constant="35" id="105"/>
+                                                <constraint firstItem="103" firstAttribute="top" secondItem="98" secondAttribute="top" constant="20" id="106"/>
+                                                <constraint firstAttribute="bottom" secondItem="103" secondAttribute="bottom" constant="20" id="107"/>
+                                                <constraint firstItem="109" firstAttribute="centerY" secondItem="103" secondAttribute="centerY" id="110"/>
+                                                <constraint firstAttribute="trailing" secondItem="109" secondAttribute="trailing" constant="10" id="111"/>
+                                                <constraint firstItem="109" firstAttribute="leading" secondItem="103" secondAttribute="trailing" constant="20" id="113"/>
+                                                <constraint firstItem="103" firstAttribute="leading" secondItem="98" secondAttribute="leading" constant="35" id="118">
                                                     <variation key="widthClass=compact" constant="5"/>
                                                 </constraint>
-                                                <constraint id="120" firstItem="103" firstAttribute="leading" secondItem="98" secondAttribute="leading" constant="35"/>
+                                                <constraint firstItem="103" firstAttribute="leading" secondItem="98" secondAttribute="leading" constant="35" id="120"/>
                                             </constraints>
-                                            <variation key="widthClass=regular">
+                                            <variation key="default">
                                                 <mask key="constraints">
-                                                    <include reference="105"/>
+                                                    <exclude reference="105"/>
+                                                    <exclude reference="118"/>
                                                 </mask>
                                             </variation>
                                             <variation key="widthClass=compact">
@@ -143,41 +149,93 @@
                                                     <include reference="118"/>
                                                 </mask>
                                             </variation>
-                                            <variation key="default">
+                                            <variation key="widthClass=regular">
                                                 <mask key="constraints">
-                                                    <exclude reference="105"/>
-                                                    <exclude reference="118"/>
+                                                    <include reference="105"/>
                                                 </mask>
                                             </variation>
                                         </tableViewCellContentView>
                                         <connections>
-                                            <outlet property="_timeLabel" destination="109" id="name-outlet-109"/>
                                             <outlet property="_nameLabel" destination="103" id="name-outlet-103"/>
+                                            <outlet property="_timeLabel" destination="109" id="name-outlet-109"/>
+                                        </connections>
+                                    </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="ProjectStatTableViewCell" rowHeight="96" id="133" customClass="ProjectStatTableViewCell">
+                                        <rect key="frame" x="0.0" y="149" width="550" height="96"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="133" id="134">
+                                            <rect key="frame" x="0.0" y="0.0" width="550" height="95.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Project Name" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="135">
+                                                    <rect key="frame" x="5" y="20" width="130" height="55.5"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="130" id="7Zp-QC-Wsh"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="151">
+                                                    <rect key="frame" x="169" y="30.5" width="305" height="35"/>
+                                                    <subviews>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0%" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="155" misplaced="YES">
+                                                            <rect key="frame" x="5" y="7" width="76" height="20"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="42" id="158"/>
+                                                            </constraints>
+                                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                            <nil key="textColor"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                    </subviews>
+                                                    <color key="backgroundColor" red="1" green="1" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="35" id="152"/>
+                                                        <constraint firstItem="155" firstAttribute="leading" secondItem="151" secondAttribute="leading" constant="5" id="156"/>
+                                                        <constraint firstItem="155" firstAttribute="centerY" secondItem="151" secondAttribute="centerY" id="157"/>
+                                                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="40" id="J6A-ad-Dyo"/>
+                                                    </constraints>
+                                                </view>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="135" firstAttribute="leading" secondItem="134" secondAttribute="leading" constant="5" id="136"/>
+                                                <constraint firstItem="135" firstAttribute="top" secondItem="134" secondAttribute="top" constant="20" id="137"/>
+                                                <constraint firstAttribute="bottom" secondItem="135" secondAttribute="bottom" constant="20" id="138"/>
+                                                <constraint firstItem="151" firstAttribute="leading" secondItem="135" secondAttribute="trailing" constant="34" id="153"/>
+                                                <constraint firstItem="151" firstAttribute="centerY" secondItem="135" secondAttribute="centerY" id="154"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="_projectNameLabel" destination="135" id="name-outlet-135"/>
+                                            <outlet property="_barView" destination="151" id="name-outlet-151"/>
+                                            <outlet property="BarViewWidth" destination="J6A-ad-Dyo" id="name-outlet-J6A-ad-Dyo"/>
+                                            <outlet property="_percentageLabel" destination="155" id="name-outlet-155"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
-                                <color key="separatorColor" colorSpace="calibratedWhite" white="0.333333333333333" alpha="1"/>
                             </tableView>
                         </subviews>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint id="65" firstItem="64" firstAttribute="top" secondItem="23" secondAttribute="top"/>
-                            <constraint id="66" firstItem="64" firstAttribute="leading" secondItem="23" secondAttribute="leading"/>
-                            <constraint id="67" firstItem="23" firstAttribute="trailing" secondItem="64" secondAttribute="trailing"/>
-                            <constraint id="68" firstItem="23" firstAttribute="bottom" secondItem="64" secondAttribute="bottom"/>
-                            <constraint id="74" firstItem="71" firstAttribute="top" secondItem="19" secondAttribute="bottom" constant="25"/>
-                            <constraint id="75" firstItem="71" firstAttribute="leading" secondItem="64" secondAttribute="leading" constant="25"/>
-                            <constraint id="76" firstItem="64" firstAttribute="trailing" secondItem="71" secondAttribute="trailing" constant="25"/>
-                            <constraint id="77" firstItem="64" firstAttribute="bottom" secondItem="71" secondAttribute="bottom" constant="25"/>
+                            <constraint firstItem="64" firstAttribute="top" secondItem="23" secondAttribute="top" id="65"/>
+                            <constraint firstItem="64" firstAttribute="leading" secondItem="23" secondAttribute="leading" id="66"/>
+                            <constraint firstAttribute="trailing" secondItem="64" secondAttribute="trailing" id="67"/>
+                            <constraint firstAttribute="bottom" secondItem="64" secondAttribute="bottom" id="68"/>
+                            <constraint firstItem="71" firstAttribute="top" secondItem="19" secondAttribute="bottom" constant="25" id="74"/>
+                            <constraint firstItem="71" firstAttribute="leading" secondItem="64" secondAttribute="leading" constant="25" id="75"/>
+                            <constraint firstItem="64" firstAttribute="trailing" secondItem="71" secondAttribute="trailing" constant="25" id="76"/>
+                            <constraint firstItem="64" firstAttribute="bottom" secondItem="71" secondAttribute="bottom" constant="25" id="77"/>
                         </constraints>
                     </view>
-                    <navigationItem title="Projects" id="55" key="navigationItem"/>
+                    <navigationItem key="navigationItem" title="Projects" id="55"/>
                     <connections>
                         <outlet property="_projectsTableView" destination="71" id="name-outlet-71"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="24" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="288" y="154"/>
+            <point key="canvasLocation" x="287.5" y="153.5156"/>
         </scene>
     </scenes>
     <resources>

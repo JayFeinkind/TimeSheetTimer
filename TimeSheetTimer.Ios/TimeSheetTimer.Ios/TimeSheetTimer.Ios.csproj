@@ -132,6 +132,14 @@
     <Compile Include="ProjectTimeTableViewCell.designer.cs">
       <DependentUpon>ProjectTimeTableViewCell.cs</DependentUpon>
     </Compile>
+    <Compile Include="StatisticsViewController.cs" />
+    <Compile Include="StatisticsViewController.designer.cs">
+      <DependentUpon>StatisticsViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ProjectStatTableViewCell.cs" />
+    <Compile Include="ProjectStatTableViewCell.designer.cs">
+      <DependentUpon>ProjectStatTableViewCell.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\TimeSheetTimer.Mobile\TimeSheetTimer.Mobile.ClassLibrary\TimeSheetTimer.Mobile.ClassLibrary.csproj">
