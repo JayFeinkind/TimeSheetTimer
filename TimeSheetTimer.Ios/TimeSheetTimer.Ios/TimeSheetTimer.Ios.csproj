@@ -36,7 +36,7 @@
     <OutputPath>bin\iPhone\Release</OutputPath>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <CodesignKey>iPhone Distribution</CodesignKey>
+    <CodesignKey>iPhone Distribution: Jason Feinkind (5L2743CQNH)</CodesignKey>
     <MtouchUseSGen>true</MtouchUseSGen>
     <MtouchUseRefCounting>true</MtouchUseRefCounting>
     <MtouchFloat32>true</MtouchFloat32>
@@ -46,7 +46,7 @@
     <MtouchHttpClientHandler>HttpClientHandler</MtouchHttpClientHandler>
     <MtouchTlsProvider>Default</MtouchTlsProvider>
     <PlatformTarget>x86</PlatformTarget>
-    <CodesignProvision>ca084dae-acb3-4767-b70c-b68159d46525</CodesignProvision>
+    <CodesignProvision>c5900642-2ba3-435d-b7e1-1fdc3fa6c2b8</CodesignProvision>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhoneSimulator' ">
     <DebugType>pdbonly</DebugType>
@@ -131,10 +131,6 @@
     <Compile Include="ProjectTimeTableViewCell.cs" />
     <Compile Include="ProjectTimeTableViewCell.designer.cs">
       <DependentUpon>ProjectTimeTableViewCell.cs</DependentUpon>
-    </Compile>
-    <Compile Include="StatisticsViewController.cs" />
-    <Compile Include="StatisticsViewController.designer.cs">
-      <DependentUpon>StatisticsViewController.cs</DependentUpon>
     </Compile>
     <Compile Include="ProjectStatTableViewCell.cs" />
     <Compile Include="ProjectStatTableViewCell.designer.cs">
